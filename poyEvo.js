@@ -1,7 +1,7 @@
 //==================================//
 //===|        PoyEvo            |===//
-//===| Version : 1.01           |===//
-//===| Date : 19/11/2014        |===//
+//===| Version : 1.02           |===//
+//===| Date : 21/11/2014        |===//
 //===|                          |===//
 //==================================//
 //===|                          |===//
@@ -13,7 +13,20 @@
 //===|  poyoCore_std            |===//
 //===|                          |===//
 //==================================//
+
 //~ load_jsLib( 'poyoCore_std');
+
+//==================================//
+//===|   Notes de verions       |===//
+//===|                          |===//
+//===| 1.02 : adding randTime   |===//
+//===|                          |===//
+//===|                          |===//
+//===|                          |===//
+//===|                          |===//
+//===|                          |===//
+//==================================//
+
 
 //===| PoyoEvo configuration variable
 var pe_conf = {
@@ -163,6 +176,26 @@ function pe_bind_stepTime(steps, length)
 		at = parseInt((at/p)*steps);
 		
 		return at / steps;
+	}
+}
+
+// Retourne un nombre aléatoire variant tous les steps appels
+function pe_bind_randTime( steps)
+{
+	var tirage = 0; // nombre d'appels avant tirage
+	var n;
+	
+	return function()
+	{
+		if( tirage < 1)
+		{
+			tirage = steps;
+			n = Math.random();
+		}
+		
+		-- tirage;
+		
+		return n;
 	}
 }
 
