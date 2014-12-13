@@ -39,15 +39,15 @@ var pe_conf = {
 	}
 
 //===| PoyEvo Class
-var PoyEvo = function( targetObject, targetProperty, startValue, endValue, syntaxFunction, bindingFunction, shapeFunction, canUnderBound, canHoverBound, isPersitent)
+var PoyEvo = function( targetObject, targetProperty, startValue, endValue, pe_syntax_function, pe_bind_function, pe_shape_function, canUnderBound, canHoverBound, isPersitent)
 {
 	this.to = targetObject;					
 	this.tp = targetProperty;				// 'style.top' for exemple
 	this.sv = startValue;					
 	this.ev = endValue;						
-	this.yf = syntaxFunction;				// functions used to build the syntax of the value. adding 'px' for example.
-	this.bf = bindingFunction;				// The function wich indicate the percent of evolution. (0->1 in general cases)
-	this.sf = shapeFunction;				// This function make post treatment on the evolution to make it not linear
+	this.yf = pe_syntax_function;				// functions used to build the syntax of the value. adding 'px' for example.
+	this.bf = pe_bind_function;				// The function wich indicate the percent of evolution. (0->1 in general cases)
+	this.sf = pe_shape_function;				// This function make post treatment on the evolution to make it not linear
 	
 	this.cUB = canUnderBound;				// Indicate if the evolution can go under the startValue
 	this.cHB = canHoverBound;				// Indicate if the evolution can overflow the endValue
@@ -256,24 +256,46 @@ function pe_delEvo( id)
 }
 
 // Création d'une évolution standard ... complet.
-function pe_addEvo_std( targetObject, targetProperty, startValue, endValue, syntaxFunction, bindingFunction, shapeFunction, canUnderBound, canHoverBound, isPersitent)
+function pe_addEvo_std( targetObject, targetProperty, startValue, endValue, pe_syntax_function, pe_bind_function, pe_shape_function, canUnderBound, canHoverBound, isPersitent, removeDoubles/*=false*/)
 {
-	return pe_conf.listOfEvos.push( new PoyEvo( targetObject, targetProperty, startValue, endValue, syntaxFunction, bindingFunction, shapeFunction, canUnderBound, canHoverBound, isPersitent));
+	if( removeDoubles != undefined && removeDoubles)
+		pe_deleteConflictualEvo( targetObject, targetProperty);
+		
+	return pe_conf.listOfEvos.push( new PoyEvo( targetObject, targetProperty, startValue, endValue, pe_syntax_function, pe_bind_function, pe_shape_function, canUnderBound, canHoverBound, isPersitent));
 }
 
 // fonction dédiée aux évolutions de type animations temporelles.
-function pe_addEvo_ani( targetObject, targetProperty, startValue, endValue, syntaxFunction, deltaTime, length, shapeFunction)
+function pe_addEvo_ani( targetObject, targetProperty, startValue, endValue, pe_syntax_function, deltaTime, length, pe_shape_function, removeDoubles/*=false*/)
 {
-	return pe_conf.listOfEvos.push( new PoyEvo( targetObject, targetProperty, startValue, endValue, syntaxFunction, pe_bind_time( deltaTime, length), shapeFunction, false, false, false));
+	if( removeDoubles != undefined && removeDoubles)
+		pe_deleteConflictualEvo( targetObject, targetProperty);
+	
+	return pe_conf.listOfEvos.push( new PoyEvo( targetObject, targetProperty, startValue, endValue, pe_syntax_function, pe_bind_time( deltaTime, length), pe_shape_function, false, false, false));
 }
 
 // fonction dédiée aux évolutions de type sprite.
-function pe_addEvo_sprite( targetDiv, img_sprite, nb_img, px_space, timespace)
+function pe_addEvo_sprite( targetDiv, img_sprite, nb_img, px_space, timespace, removeDoubles/*=false*/)
 {
+	var targetProperty = "style.backgroundPosition";
+	
+	if( removeDoubles != undefined && removeDoubles)
+		pe_deleteConflictualEvo( targetDiv, targetProperty);
+	
 	targetDiv.style.backgroundImage = "url('" + img_sprite + "')";
-	pe_addEvo_std( targetDiv, "style.backgroundPosition", 0, nb_img*px_space, pe_syntax_suffix("px 0px"), pe_bind_stepTime(nb_img, timespace), pe_shape_linear, false, false, true)
+	pe_addEvo_std( targetDiv, targetProperty, 0, nb_img*px_space, pe_syntax_suffix("px 0px"), pe_bind_stepTime(nb_img, timespace), pe_shape_linear, false, false, true)
 }
 
 //===| Aux functions
 
-
+// Supprime les annimations ayant pour cible le même objet et la même propriété
+function pe_deleteConflictualEvo( targetObject, targetProperty)
+{
+	for( var i=0; i<pe_conf.listOfEvos.length; ++i)
+	{
+		if( targetObject == pe_conf.listOfEvos[i].to
+			&& targetProperty == pe_conf.listOfEvos[i].tp)
+		{
+			pe_delEvo( i);
+		}
+	}
+}
