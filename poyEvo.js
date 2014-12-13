@@ -101,6 +101,15 @@ function pe_syntax_prefix_suffix( prefix, suffix)
 
 function pe_syntax_suffix( suffix) {return pe_syntax_prefix_suffix( "", suffix);}
 
+function pe_syntax_grayscale()
+{
+	return function( v)
+	{
+		v = parseInt( v);
+		return "rgb(" + v + "," + v + "," + v + ")";
+	}
+}
+
 function pe_syntax_bgPosition( targetObject, axe, ext)
 {
 	return function( v)
