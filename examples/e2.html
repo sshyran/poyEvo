@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Exemple 2</title>
+		<meta charset="utf-8" />
+		<script type="text/javascript" src="../lib/poyoCore_std.js"></script>
+		<script type="text/javascript" src="../poyEvo.js"></script>
+		
+		<script type="text/javascript">
+			
+			function launch_examples()
+			{
+				eval(gebid("codejs").value);
+			}
+		</script>
+	</head>
+
+	<body onload="launch_examples()">
+		<fieldset>
+			<legend><h4>Animations non linéaire</h4></legend>
+				Dans cet exemple, on superpose plusieurs animations. Ces animations ne sont pas linéaires, ce qui donne un effet ralenti ou élastique.<br/>
+				
+				On peut remarquer certains paramètres changés, en particulier, la série de booléens à la fin des annimations.<br/>
+				N'hésitez pas à jouer avec ces paramètres pour voir en quoi ils influent sur l'animation<br/>
+				
+				<br/>
+				<a href="e3.html">Intéret du paramètre isPersitent</a>
+		</fieldset>
+		<br/>
+		
+		<fieldset>
+			<legend>Code</legend>
+			<textarea id="codejs" style="width:100%; height:200px;">
+pe_addEvo_std( gebid("animObj"), "style.left", "0", "90", pe_syntax_suffix("%"),
+	pe_bind_lazyMouse( "x", 0.05), pe_shape_linear, true, true, true, true);
+	
+pe_addEvo_std( gebid("animObj"), "style.width", "0", "10", pe_syntax_suffix("%"),
+	pe_bind_rotativeTime( 500, 1000, 100), pe_shape_asin, false, true, true, true);
+	
+pe_addEvo_std( gebid("animObj"), "style.height", "0", "10", pe_syntax_suffix("%"),
+	pe_bind_rotativeTime( 500, 1000, 400), pe_shape_ela, false, true, true, true);
+			</textarea>
+			
+			<button onclick="launch_examples()">Relancer ce code</button>
+		</fieldset>
+		<br/>
+		
+		<div id="animObj" style="position:absolute;width:10%;height:10%;background-color:rgba(200,200,255, 0.3);border:6px solid gray;"></div>
+	</body>
+</html>
