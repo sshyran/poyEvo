@@ -1,6 +1,6 @@
 //==================================//
 //===|        PoyEvo            |===//
-//===| Version : 1.02           |===//
+//===| Version : 1.03           |===//
 //===| Date : 21/11/2014        |===//
 //===|                          |===//
 //==================================//
@@ -29,13 +29,12 @@ var pe_conf = {
 	}
 
 //===| PoyEvo Class
-var PoyEvo = function( targetObject, targetProperty, startValue, endValue, pe_syntax_function, pe_bind_function, pe_shape_function, canUnderBound, canHoverBound, isPersitent, unid)
+var PoyEvo = function( targetObject, targetProperty, pe_range_function, pe_syntax_function, pe_bind_function, pe_shape_function, canUnderBound, canHoverBound, isPersitent, unid)
 {
 	this.to = targetObject;					
 	this.tp = targetProperty;				// 'style.top' for exemple
-	this.sv = startValue;					
-	this.ev = endValue;						
-	this.yf = pe_syntax_function;			// functions used to build the syntax of the value. adding 'px' for example.
+	this.rf = pe_range_function;			// Function in charge of converting binding function value (0->1) to an other range (ev->sv)
+	this.yf = pe_syntax_function;			// Functions used to build the syntax of the value. adding 'px' for example.
 	this.bf = pe_bind_function;			// The function wich indicate the percent of evolution. (0->1 in general cases)
 	this.sf = pe_shape_function;			// This function make post treatment on the evolution to make it not linear
 	
@@ -61,11 +60,11 @@ function pe_start()
 		
 		if( p<0 && !iEvo.cUB)
 		{
-			poyoCore_setAtribute( iEvo.to, iEvo.tp, iEvo.yf( iEvo.sv));
+			poyoCore_setAtribute( iEvo.to, iEvo.tp, iEvo.yf( iEvo.rf(0)));
 		}
 		else if( p>1 && !iEvo.cHB)
 		{
-			poyoCore_setAtribute( iEvo.to, iEvo.tp, iEvo.yf( iEvo.ev));
+			poyoCore_setAtribute( iEvo.to, iEvo.tp, iEvo.yf( iEvo.rf(1)));
 			if( !iEvo.iPe)
 			{
 				pe_conf.listOfEvos.splice( i, 1);
@@ -75,11 +74,20 @@ function pe_start()
 		else
 		{
 			p = iEvo.sf( p);
-			poyoCore_setAtribute( iEvo.to, iEvo.tp, iEvo.yf((1-p)*iEvo.sv + p*iEvo.ev));
+			poyoCore_setAtribute( iEvo.to, iEvo.tp, iEvo.yf( iEvo.rf(p)));
 		}
 	}
 	
 	setTimeout("pe_start()", pe_conf.refreshTime);
+}
+
+//===| range functions
+function pe_range_fixed( startValue, endValue)
+{
+	return function( v)
+	{
+		return ((1-v)*startValue + v*endValue);
+	}
 }
 
 //===| syntax functions
@@ -93,6 +101,11 @@ function pe_syntax_prefix_suffix( prefix, suffix)
 }
 
 function pe_syntax_suffix( suffix) {return pe_syntax_prefix_suffix( "", suffix);}
+
+function pe_syntax_none()
+{
+	return function( v) { return v;}
+}
 
 function pe_syntax_grayscale()
 {
@@ -251,22 +264,28 @@ function pe_delEvo( unid)
 		pe_conf.listOfEvos.splice( i, 1);
 }
 
-// Création d'une évolution standard ... complet.
-function pe_addEvo_std( targetObject, targetProperty, startValue, endValue, pe_syntax_function, pe_bind_function, pe_shape_function, canUnderBound, canHoverBound, isPersitent, removeDoubles/*=false*/)
+// Création d'une évolution. Contrôle total de l'évolution : utile lorque l'intervale d'évolution varie au cours du temps.
+function pe_addEvo_cpl( targetObject, targetProperty, pe_range_function, pe_syntax_function, pe_bind_function, pe_shape_function, canUnderBound, canHoverBound, isPersitent, removeDoubles/*=false*/)
 {
 	if( removeDoubles != undefined && removeDoubles)
 		pe_deleteConflictualEvo( targetObject, targetProperty);
 	
 	var unid = ++pe_conf.counter;
-	pe_conf.listOfEvos.push( new PoyEvo( targetObject, targetProperty, startValue, endValue, pe_syntax_function, pe_bind_function, pe_shape_function, canUnderBound, canHoverBound, isPersitent, unid));
+	pe_conf.listOfEvos.push( new PoyEvo( targetObject, targetProperty, pe_range_function, pe_syntax_function, pe_bind_function, pe_shape_function, canUnderBound, canHoverBound, isPersitent, unid));
 	
 	return unid;
+}
+
+// Création d'une évolution standard ...
+function pe_addEvo_std( targetObject, targetProperty, startValue, endValue, pe_syntax_function, pe_bind_function, pe_shape_function, canUnderBound, canHoverBound, isPersitent, removeDoubles/*=false*/)
+{
+	return pe_addEvo_cpl( targetObject, targetProperty, pe_range_fixed(startValue, endValue), pe_syntax_function, pe_bind_function, pe_shape_function, canUnderBound, canHoverBound, isPersitent, removeDoubles);
 }
 
 // fonction dédiée aux évolutions de type animations temporelles.
 function pe_addEvo_ani( targetObject, targetProperty, startValue, endValue, pe_syntax_function, deltaTime, length, pe_shape_function, removeDoubles/*=false*/)
 {
-	return pe_addEvo_std( targetObject, targetProperty, startValue, endValue, pe_syntax_function, pe_bind_time( deltaTime, length), pe_shape_function, false, false, false, removeDoubles);
+	return pe_addEvo_cpl( targetObject, targetProperty, pe_range_fixed(startValue, endValue), pe_syntax_function, pe_bind_time( deltaTime, length), pe_shape_function, false, false, false, removeDoubles);
 }
 
 // fonction dédiée aux évolutions de type sprite.
@@ -274,7 +293,7 @@ function pe_addEvo_sprite( targetDiv, img_sprite, nb_img, px_space, timespace, r
 {
 	targetDiv.style.backgroundImage = "url('" + img_sprite + "')";
 	
-	return pe_addEvo_std( targetDiv, "style.backgroundPosition", 0, nb_img*px_space, pe_syntax_suffix("px 0px"), pe_bind_stepTime(nb_img, timespace), pe_shape_linear, false, false, true, removeDoubles);
+	return pe_addEvo_cpl( targetDiv, "style.backgroundPosition", pe_range_fixed(0, nb_img*px_space), pe_syntax_suffix("px 0px"), pe_bind_stepTime(nb_img, timespace), pe_shape_linear, false, false, true, removeDoubles);
 }
 
 //===| Aux functions
