@@ -24,7 +24,6 @@ var pe_conf = {
 	
 	//===| Internal Parameters |===//
 	'counter':0,
-	'trackMouseStarted':false, 		// Indicate if the tracking of the mouse has been launched yet
 	'listOfEvos':new Array() 			// List the evos curently in process
 	}
 
