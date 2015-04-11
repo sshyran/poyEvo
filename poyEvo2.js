@@ -224,43 +224,50 @@ var pe = {
 			}
 		},
 		
-		mouse: function( axe)
+		mouse: function( axe, speed/*optionel*/)
 		{
 			poyoCore_trackMouse();
 			
+			if( speed == undefined)
+				return pe.bind.property( poyoCore_mouse, axe, axe == "x" ? poyoCore_wWidth : poyoCore_wHeight);
+			else
+				return pe.bind.lazyProperty( poyoCore_mouse, axe, axe == "x" ? poyoCore_wWidth : poyoCore_wHeight, speed);
+		},
+		
+		scrollBar: function( element, axe, speed/*optionel*/)
+		{
+			var property = axe == "x" ? "scrollLeft" : "scrollTop";
+			
+			var rangeFtc;
+			if( element = document.body)
+				rangeFtc = axe == "x" ? function(){return element.scrollWidth - poyoCore_wWidth()} : function(){return element.scrollHeight - poyoCore_wHeight()};
+			else
+				rangeFtc = axe == "x" ? function(){return element.scrollWidth - element.offsetWidth} : function(){return element.scrollHeight - element.offsetHeight}
+			
+			if( speed == undefined)
+				return pe.bind.property( element, property, rangeFtc);
+			else
+				return pe.bind.lazyProperty( element, property, rangeFtc, speed);
+		},
+		
+		// Fonction bas niveau prévue plutôt pour un usage interne
+		property: function( element, property, rangeFtc)
+		{
 			return function()
 			{
-				if( axe == "x")
-				{
-					return poyoCore_mouse.x / poyoCore_wWidth();
-				}
-				else
-				{
-					return poyoCore_mouse.y / poyoCore_wHeight();
-				}
+				return poyoCore_getAtribute( element, property) / rangeFtc();
 			}
 		},
 		
-		lazyMouse: function( axe, speed)
+		lazyProperty: function( element, property, rangeFtc, speed)
 		{
-			poyoCore_trackMouse();
-			
-			var ox = poyoCore_mouse.x;
-			var oy = poyoCore_mouse.y;
+			var ov = poyoCore_getAtribute( element, property);
 			
 			return function()
 			{
-				ox = (1-speed)*ox + speed*poyoCore_mouse.x;
-				oy = (1-speed)*oy + speed*poyoCore_mouse.y;
+				ov = (1-speed)*ov + speed*poyoCore_getAtribute( element, property);
 				
-				if( axe == "x")
-				{
-					return ox / poyoCore_wWidth();
-				}
-				else
-				{
-					return oy / poyoCore_wHeight();
-				}
+				return ov / rangeFtc();
 			}
 		}
 	},
