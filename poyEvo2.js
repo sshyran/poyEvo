@@ -238,11 +238,20 @@ var pe = {
 		{
 			var property = axe == "x" ? "scrollLeft" : "scrollTop";
 			
-			var rangeFtc;
-			if( element = document.body)
+			var rangeFtc; var ldb = document.body; var lde = document.documentElement
+			if( element == ldb || element == lde)
+			{
+				//gestion automatique des bugs liés au doctype pour simplifier l'utilisation, et la compatibilité ( document.documentElement <=> document.body)
+				window.scrollBy(1, 1);
+				(lde && lde.scrollTop) ? element = lde : element = ldb;
+				window.scrollBy(-1, -1);
+				
 				rangeFtc = axe == "x" ? function(){return element.scrollWidth - poyoCore_wWidth()} : function(){return element.scrollHeight - poyoCore_wHeight()};
+			}
 			else
+			{
 				rangeFtc = axe == "x" ? function(){return element.scrollWidth - element.offsetWidth} : function(){return element.scrollHeight - element.offsetHeight}
+			}
 			
 			if( speed == undefined)
 				return pe.bind.property( element, property, rangeFtc);
