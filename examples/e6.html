@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 	<head>
-		<title>Exemple 5</title>
+		<title>Exemple 6</title>
 		<meta charset="utf-8" />
 		<script type="text/javascript" src="../lib/poyoCore_std.js"></script>
 		<script type="text/javascript" src="../poyEvo2.js"></script>
@@ -17,20 +17,35 @@
 
 	<body onload="launch_examples()">
 		<fieldset>
-			<legend><h4>La scrollBar</h4></legend>
-				Une application possible au binding de scrollbar, avec une page qui évolue lorsqu'on la parcourt.
-				
+			<legend><h4>La scrollBar v2</h4></legend>
+				Pour le moment, nous avons principalement utilisé la fonction <i>pe.addEvo.std</i>. Cependant, elle montre ses limites dans certaines situations ... comme dans cet exemple.<br/>
+				Si vous essayez de redimensionner la fenêtre, sans la recharger entre temps, vous allez voir que le comportement des annimations devient innatendu.<br/>
 				<br/>
-				<a href="e6.html">Le paramètre range</a>
+				Le problème vient du fait que les paramètre <i>startValue</i> et <i>endValue</i> sont fixés et ne changent pas.<br/>
+				Heureusement <b>PoyEvo</b> fournit une fonction qui permet de gérer ce genre de situation : <i>pe.addEvo.cpl</i>.<br/>
+				Elle permet d'utiliser un intervalle de valeur dynamique, plutôt que fixé (voir l'exemple suivant).<br/>
+				<br/>
+				Commentez la ligne (1) et décommentez la ligne (2) pour observer la différence<br/>
 		</fieldset>
 		<br/>
 		
 		<div id="code" style="position:relative; width:100%; background-color: rgba(255,255,255,0.8);"><fieldset>
 			<legend>Code</legend>
 			<textarea id="codejs" style="width:100%; height:200px;">
-pe.addEvo.std( gebid("img"), "style.background-position", 0, 100,
-	pe.syntax.bgPosition( gebid("img"), "y", "%"), pe.bind.scrollBar( document.body, "y", 0.1),
+//Comportement identique à pe.addEvo.std
+pe.addEvo.cpl( gebid("img"), "style.background-position", pe.range.fixed(0, 100), pe.syntax.bgPosition( gebid("img"), "y", "%"), pe.bind.scrollBar( document.body, "y", 0.1), pe.shape.linear, false, false, true, true);
+
+//(1) Cette ligne pose problème en cas de redimensionnement.
+pe.addEvo.std( gebid("code"), "style.top", 0, document.body.scrollHeight - poyoCore_wHeight(),
+	pe.syntax.suffix("px"), pe.bind.scrollBar( document.body, "y", 0.1),
 	pe.shape.linear, false, false, true, true);
+
+//(2) Comportement amélioré grâce à "pe.addEvo.cpl" et "pe.range.dynamic".
+/*pe.addEvo.cpl( gebid("code"), "style.top", 
+	pe.range.dynamic(function(){ return 0;}, function(){ return document.body.scrollHeight - poyoCore_wHeight();}),
+	pe.syntax.suffix("px"), pe.bind.scrollBar( document.body, "y", 0.1),
+	pe.shape.linear, false, false, true, true);
+*/
 			</textarea>
 			
 			<button onclick="launch_examples()">Relancer ce code</button>

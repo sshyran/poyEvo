@@ -88,6 +88,14 @@ var pe = {
 			{
 				return ((1-v)*startValue + v*endValue);
 			}
+		},
+		
+		dynamic: function( startFunction, endFunction)
+		{
+			return function( v)
+			{
+				return ((1-v)*startFunction() + v*endFunction());
+			}
 		}
 	},
 	
