@@ -4,7 +4,7 @@
 		<title>Exemple 1</title>
 		<meta charset="utf-8" />
 		<script type="text/javascript" src="../lib/poyoCore_std.js"></script>
-		<script type="text/javascript" src="../poyEvo.js"></script>
+		<script type="text/javascript" src="../poyEvo2.js"></script>
 		
 		<script type="text/javascript">
 			
@@ -19,7 +19,7 @@
 		<fieldset>
 			<legend><h4>Animation linéaire</h4></legend>
 				Dans cet exemple, on change la propriété <b>style.left</b> de l'objet. On la fait varier de <b>0%</b> à <b>90%</b><br/>
-				Le paramètre <b>pe_bind_time</b> indique que l'objet doit bouger en fonction du temps.
+				Le paramètre <b>pe.bind.time</b> indique que l'objet doit bouger en fonction du temps.
 				
 				<br/>
 				<br/>
@@ -30,8 +30,8 @@
 		<fieldset>
 			<legend>Code</legend>
 			<textarea id="codejs" style="width:100%; height:200px;">
-pe_addEvo_std( gebid("animObj"), "style.left", "0", "90", pe_syntax_suffix("%"),
-	pe_bind_time( 500, 10000), pe_shape_linear, false, false, false);
+pe.addEvo.std( gebid("animObj"), "style.left", "0", "90", pe.syntax.suffix("%"),
+	pe.bind.time( 500, 10000), pe.shape.linear, false, false, false);
 			</textarea>
 			
 			<button onclick="launch_examples()">Relancer ce code</button>

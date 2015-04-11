@@ -13,7 +13,7 @@
    height="1052.3622"
    id="svg2"
    version="1.1"
-   inkscape:version="0.48.5 r10040"
+   inkscape:version="0.91 r13725"
    sodipodi:docname="schema_fonctionnel.svg">
   <defs
      id="defs4">
@@ -39,7 +39,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.76969699"
-     inkscape:cx="171.3189"
+     inkscape:cx="-30.059047"
      inkscape:cy="578.14959"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -57,7 +57,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -226,7 +226,7 @@
          sodipodi:role="line">string? (sv- .. ev+)</tspan></text>
     <path
        style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Mend)"
-       d="m 327.60853,131.54852 -0.82343,60.79002"
+       d="m 327.75182,131.54852 -0.37676,60.79002"
        id="path3804"
        inkscape:connector-type="polyline"
        inkscape:connector-curvature="0"
@@ -236,7 +236,7 @@
        inkscape:connection-end-point="d4" />
     <path
        style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Mend)"
-       d="m 326.52096,231.33854 0,61"
+       d="m 327.42483,231.33854 0.53375,61"
        id="path3806"
        inkscape:connector-type="polyline"
        inkscape:connector-curvature="0"
@@ -246,7 +246,7 @@
        inkscape:connection-end-point="d4" />
     <path
        style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Mend)"
-       d="m 326.52096,331.33854 0,61"
+       d="m 328.63804,331.33854 1.59171,61"
        id="path3808"
        inkscape:connector-type="polyline"
        inkscape:connector-curvature="0"
@@ -279,7 +279,7 @@
     </g>
     <path
        style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Mend)"
-       d="m 326.52096,431.33854 0,41"
+       d="m 329.71054,431.33854 -2.16153,41"
        id="path4262"
        inkscape:connector-type="polyline"
        inkscape:connector-curvature="0"

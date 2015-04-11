@@ -4,7 +4,7 @@
 		<title>Exemple 2</title>
 		<meta charset="utf-8" />
 		<script type="text/javascript" src="../lib/poyoCore_std.js"></script>
-		<script type="text/javascript" src="../poyEvo.js"></script>
+		<script type="text/javascript" src="../poyEvo2.js"></script>
 		
 		<script type="text/javascript">
 			
@@ -31,14 +31,14 @@
 		<fieldset>
 			<legend>Code</legend>
 			<textarea id="codejs" style="width:100%; height:200px;">
-pe_addEvo_std( gebid("animObj"), "style.left", "0", "90", pe_syntax_suffix("%"),
-	pe_bind_lazyMouse( "x", 0.05), pe_shape_linear, true, true, true, true);
+pe.addEvo.std( gebid("animObj"), "style.left", "0", "90", pe.syntax.suffix("%"),
+	pe.bind.lazyMouse( "x", 0.05), pe.shape.linear, true, true, true, true);
 	
-pe_addEvo_std( gebid("animObj"), "style.width", "0", "10", pe_syntax_suffix("%"),
-	pe_bind_rotativeTime( 500, 1000, 100), pe_shape_asin, false, true, true, true);
+pe.addEvo.std( gebid("animObj"), "style.width", "0", "10", pe.syntax.suffix("%"),
+	pe.bind.rotativeTime( 500, 1000, 100), pe.shape.asin, false, true, true, true);
 	
-pe_addEvo_std( gebid("animObj"), "style.height", "0", "10", pe_syntax_suffix("%"),
-	pe_bind_rotativeTime( 500, 1000, 400), pe_shape_ela, false, true, true, true);
+pe.addEvo.std( gebid("animObj"), "style.height", "0", "10", pe.syntax.suffix("%"),
+	pe.bind.rotativeTime( 500, 1000, 400), pe.shape.ela, false, true, true, true);
 			</textarea>
 			
 			<button onclick="launch_examples()">Relancer ce code</button>
