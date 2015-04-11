@@ -284,6 +284,8 @@ var pe = {
 	
 	// Création d'une évolution. Contrôle total de l'évolution : utile lorque l'intervale d'évolution varie au cours du temps.
 	addEvo: {
+		
+		// ---BETA FUNCTION--- => this function may disapear in the following verions of the library ... or at least be modificated
 		cpl: function( targetObject, targetProperty, pe_range_function, pe_syntax_function, pe_bind_function, pe_shape_function, canUnderBound, canHoverBound, isPersitent, removeDoubles/*=false*/)
 		{
 			if( removeDoubles != undefined && removeDoubles)
@@ -313,7 +315,7 @@ var pe = {
 			targetDiv.style.backgroundImage = "url('" + img_sprite + "')";
 			
 			return pe.addEvo.cpl( targetDiv, "style.backgroundPosition", pe.range.fixed(0, nb_img*px_space), pe.syntax.suffix("px 0px"), pe.bind.stepTime(nb_img, timespace), pe.shape.linear, false, false, true, removeDoubles);
-		},
+		}
 	},
 	
 	//===| Aux functions
