@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Exemple 7</title>
+		<meta charset="utf-8" />
+		<script type="text/javascript" src="../lib/poyoCore_std.js"></script>
+		<script type="text/javascript" src="../poyEvo2.js"></script>
+		
+		<script type="text/javascript">
+			
+			function launch_examples()
+			{
+				eval(gebid("codejs").value);
+			}
+		</script>
+	</head>
+
+	<body onload="launch_examples()">
+		<fieldset>
+			<legend><h4>Une fonction callback</h4></legend>
+				Il est possible de définir une fonction callBack qui sera appelée automatiquement en fin d'annimation, grâce à la fonction <i>pe.setEvo.callBack</i>
+		</fieldset>
+		<br/>
+		
+		<fieldset>
+			<legend>Code</legend>
+			<textarea id="codejs" style="width:100%; height:200px;">
+var evo = pe.addEvo.std( gebid("animObj"), "style.left", "0", "90", pe.syntax.suffix("%"),
+	pe.bind.time( 500, 2000), pe.shape.linear, false, false, false);
+pe.setEvo.callBack( evo, function(){alert("coucou");})
+			</textarea>
+			
+			<button onclick="launch_examples()">Relancer ce code</button>
+		</fieldset>
+		<br/>
+		
+		<div id="animObj" style="position:absolute;width:10%;height:10%;background-color:rgba(200,200,255, 0.3);border:6px solid gray;"></div>
+	</body>
+</html>

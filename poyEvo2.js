@@ -32,6 +32,8 @@ var pe = {
 		this.cHB = canHoverBound;				// Indicate if the evolution can overflow the endValue
 		this.iPe = isPersitent;					// Indicate if the evolution must be deleted once the endValue is overFlowed
 		
+		this.cbf = null;
+		
 		// --- interne ---
 		this.uid = unid; 						// Identifiant unique de l'animation
 	},
@@ -65,6 +67,7 @@ var pe = {
 				poyoCore_setAtribute( iEvo.to, iEvo.tp, iEvo.yf( iEvo.rf(1)));
 				if( !iEvo.iPe)
 				{
+					if( iEvo.cbf != null) iEvo.cbf();
 					pe.conf.listOfEvos.splice( i, 1);
 					--i;
 				}
@@ -293,9 +296,9 @@ var pe = {
 	
 	delEvo: function( unid)
 	{
-		for( var i=0; i<pe.conf.listOfEvos.length && pe.conf.listOfEvos[i].uid != unid; ++i);
+		var evoId = pe.aux.searchEvo( unid);
 		
-		if( pe.conf.listOfEvos[i].uid == unid)
+		if( evoId!= null)
 			pe.conf.listOfEvos.splice( i, 1);
 	},
 	
@@ -306,7 +309,7 @@ var pe = {
 		cpl: function( targetObject, targetProperty, pe_range_function, pe_syntax_function, pe_bind_function, pe_shape_function, canUnderBound, canHoverBound, isPersitent, removeDoubles/*=false*/)
 		{
 			if( removeDoubles != undefined && removeDoubles)
-				pe.deleteConflictualEvo( targetObject, targetProperty);
+				pe.aux.deleteConflictualEvo( targetObject, targetProperty);
 			
 			var unid = ++pe.conf.counter;
 			pe.conf.listOfEvos.push( new pe.Evo( targetObject, targetProperty, pe_range_function, pe_syntax_function, pe_bind_function, pe_shape_function, canUnderBound, canHoverBound, isPersitent, unid));
@@ -335,17 +338,37 @@ var pe = {
 		}
 	},
 	
+	//===| Modification functions
+	setEvo: {
+		// Définie la fonction qui doit être appelée à la fin de l'annimation
+		callBack: function( unid, callBackFunction)
+		{
+			var evoId = pe.aux.searchEvo( unid);
+			
+			if( evoId != null)
+				pe.conf.listOfEvos[evoId].cbf = callBackFunction;
+		}
+	},
+	
 	//===| Aux functions
 	
-	// Supprime les annimations ayant pour cible le même objet et la même propriété
-	deleteConflictualEvo: function( targetObject, targetProperty)
-	{
-		for( var i=pe.conf.listOfEvos.length-1; i>=0; --i)
+	aux: {
+		searchEvo: function( unid)
 		{
-			if( targetObject == pe.conf.listOfEvos[i].to
-				&& targetProperty == pe.conf.listOfEvos[i].tp)
+			for( var i=0; i<pe.conf.listOfEvos.length && pe.conf.listOfEvos[i].uid != unid; ++i);
+			return (pe.conf.listOfEvos[i].uid == unid ? i : null)
+		},
+		
+		// Supprime les annimations ayant pour cible le même objet et la même propriété
+		deleteConflictualEvo: function( targetObject, targetProperty)
+		{
+			for( var i=pe.conf.listOfEvos.length-1; i>=0; --i)
 			{
-				pe.conf.listOfEvos.splice( i, 1);
+				if( targetObject == pe.conf.listOfEvos[i].to
+					&& targetProperty == pe.conf.listOfEvos[i].tp)
+				{
+					pe.conf.listOfEvos.splice( i, 1);
+				}
 			}
 		}
 	}
