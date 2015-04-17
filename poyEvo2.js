@@ -67,8 +67,8 @@ var pe = {
 				poyoCore_setAtribute( iEvo.to, iEvo.tp, iEvo.yf( iEvo.rf(1)));
 				if( !iEvo.iPe)
 				{
-					if( iEvo.cbf != null) iEvo.cbf();
 					pe.conf.listOfEvos.splice( i, 1);
+					if( iEvo.cbf != null) iEvo.cbf();
 					--i;
 				}
 			}
