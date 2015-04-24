@@ -16,6 +16,8 @@
 
 //~ load_jsLib( 'poyoCore_std');
 
+// Add : Mousemove raise act
+
 var pe = {
 	
 	//===| PoyEvo Class
@@ -299,7 +301,7 @@ var pe = {
 		var evoId = pe.aux.searchEvo( unid);
 		
 		if( evoId!= null)
-			pe.conf.listOfEvos.splice( i, 1);
+			pe.conf.listOfEvos.splice( evoId, 1); 	
 	},
 	
 	// Création d'une évolution. Contrôle total de l'évolution : utile lorque l'intervale d'évolution varie au cours du temps.
@@ -335,6 +337,57 @@ var pe = {
 			targetDiv.style.backgroundImage = "url('" + img_sprite + "')";
 			
 			return pe.addEvo.cpl( targetDiv, "style.backgroundPosition", pe.range.fixed(0, nb_img*px_space), pe.syntax.suffix("px 0px"), pe.bind.stepTime(nb_img, timespace), pe.shape.linear, false, false, true, removeDoubles);
+		},
+		
+		// Démare un Drag & Drop sur l'objet "targetObjet". callBackFunction est appelée au moment du Drop.
+		dragDrop: function( targetObject, callBackFunction/*optionel*/)
+		{
+			// Computing offset
+			var offset = poyoCore_getAbsPos( targetObject.parentNode);
+			if(poyoCore_mouse.trackerStarted)
+			{
+				var pObj = poyoCore_getAbsPos( targetObject)
+				
+				offset.x += poyoCore_mouse.x - pObj.x;
+				offset.y += poyoCore_mouse.y - pObj.y;
+			}
+			else
+			{
+				var dObj = poyoCore_getInnerDim( targetObject);
+				
+				offset.x += dObj.w / 2;
+				offset.y += dObj.h / 2;
+			}
+			
+			// Starting annimations
+			var drx = pe.addEvo.cpl( targetObject, "style.left",
+									pe.range.dynamic( function(){ return -offset.x;}, function(){ return poyoCore_wWidth()-offset.x;}),
+									pe.syntax.suffix("px"), pe.bind.mouse("x"), pe.shape.linear, true, true, true, true);
+			var dry = pe.addEvo.cpl( targetObject, "style.top",
+									pe.range.dynamic( function(){ return -offset.y;}, function(){ return poyoCore_wHeight()-offset.y;}),
+									pe.syntax.suffix("px"), pe.bind.mouse("y"), pe.shape.linear, true, true, true, true);
+			
+			// Defining events
+			var blockSelect = function(){return false;}
+			var activateSelect = function(){return true;}
+			var endDrag = function()
+			{
+				pe.delEvo( drx);
+				pe.delEvo( dry);
+				
+				document.removeEventListener( "mouseup", endDrag);
+				document.onselectstart = activateSelect;
+				document.onmousedown = activateSelect;
+				
+				if( callBackFunction != undefined)
+					callBackFunction();
+			}
+			
+			document.addEventListener("mouseup", endDrag);
+			document.onselectstart = blockSelect;
+			document.onmousedown = blockSelect;
+			
+			return false;
 		}
 	},
 	
