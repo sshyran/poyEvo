@@ -16,8 +16,6 @@
 
 //~ load_jsLib( 'poyoCore_std');
 
-// Add : Mousemove raise act
-
 var pe = {
 	
 	//===| PoyEvo Class
@@ -362,10 +360,14 @@ var pe = {
 			// Starting annimations
 			var drx = pe.addEvo.cpl( targetObject, "style.left",
 									pe.range.dynamic( function(){ return -offset.x;}, function(){ return poyoCore_wWidth()-offset.x;}),
-									pe.syntax.suffix("px"), pe.bind.mouse("x"), pe.shape.linear, true, true, true, true);
+									pe.syntax.suffix("px"), pe.bind.mouse("x", 0.2), pe.shape.linear, true, true, true, true);
 			var dry = pe.addEvo.cpl( targetObject, "style.top",
 									pe.range.dynamic( function(){ return -offset.y;}, function(){ return poyoCore_wHeight()-offset.y;}),
-									pe.syntax.suffix("px"), pe.bind.mouse("y"), pe.shape.linear, true, true, true, true);
+									pe.syntax.suffix("px"), pe.bind.mouse("y", 0.2), pe.shape.linear, true, true, true, true);
+			
+			// cursor management
+			var oldCursor = targetObject.style.cursor;
+			targetObject.style.cursor = "move";
 			
 			// Defining events
 			var blockSelect = function(){return false;}
@@ -378,6 +380,7 @@ var pe = {
 				document.removeEventListener( "mouseup", endDrag);
 				document.onselectstart = activateSelect;
 				document.onmousedown = activateSelect;
+				targetObject.style.cursor = oldCursor;
 				
 				if( callBackFunction != undefined)
 					callBackFunction();
