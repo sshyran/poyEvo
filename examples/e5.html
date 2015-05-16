@@ -30,7 +30,8 @@
 			<textarea id="codejs" style="width:100%; height:200px;">
 pe.addEvo.std( gebid("img"), "style.background-position", 0, 100,
 	pe.syntax.bgPosition( gebid("img"), "y", "%"), pe.bind.scrollBar( document.body, "y", 0.1),
-	pe.shape.linear, false, false, true, true);
+	pe.shape.linear,
+	pe.state.isPersitent | pe.state.removeDoubles);
 			</textarea>
 			
 			<button onclick="launch_examples()">Relancer ce code</button>

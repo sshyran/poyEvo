@@ -17,9 +17,9 @@
 
 	<body onload="launch_examples()">
 		<fieldset>
-			<legend><h4>Intéret du paramètre isPersitent</h4></legend>
+			<legend><h4>Intéret du paramètre removeDoubles</h4></legend>
 				Supposons que la propriété style.left d'un objet soit déjà en cours d'animation, et qu'on souhaite redéfinir cette animation.<br/>
-				Si l'on souhaite que l'ancienne animation soit supprimée, il possible de mettre le paramètre <b>isPersitent</b> à <b>true</b>, comme dans l'exemple ci-dessous.<br/>
+				Si l'on souhaite que l'ancienne animation soit supprimée, il possible de mettre le paramètre <b>removeDoubles</b> à <b>true</b>, comme dans l'exemple ci-dessous.<br/>
 				<br/>
 				Essayez de mettre ce paramètre à false, afin de voir ce que cela implique.<br/>
 				
@@ -32,10 +32,11 @@
 			<legend>Code</legend>
 			<textarea id="codejs" style="width:100%; height:200px;">
 pe.addEvo.std( gebid("animObj"), "style.left", "0", "90", pe.syntax.suffix("%"),
-	pe.bind.time( 500, 10000), pe.shape.linear, false, false, false);
+	pe.bind.time( 500, 10000), pe.shape.linear);
 	
 pe.addEvo.std( gebid("animObj"), "style.left", "0", "90", pe.syntax.suffix("%"),
-	pe.bind.time( 1500, 1000), pe.shape.linear, false, false, false, true);
+	pe.bind.time( 1500, 1000), pe.shape.linear,
+	pe.state.removeDoubles);
 			</textarea>
 			
 			<button onclick="launch_examples()">Relancer ce code</button>

@@ -142,6 +142,7 @@ var pe_debug = {
 		pe_debug.rawWrite("{");
 		pe_debug.rawWriteColored("[" + evo.uid + "] ", "#FB2");
 		pe_debug.printAttribute( "property", evo.tp); pe_debug.rawWrite(", ");
+		pe_debug.printAttribute( "state", "0b" + evo.stv.toString(2).toUpperCase()); pe_debug.rawWrite(", ");
 		pe_debug.rawWrite("} : ");
 		
 		var p = evo.bf();

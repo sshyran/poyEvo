@@ -18,23 +18,25 @@
 var pe = {
 
 	//===| PoyEvo Class
-	Evo: function( targetObject, targetProperty, pe_range_function, pe_syntax_function, pe_bind_function, pe_shape_function, canUnderBound, canHoverBound, isPersitent)
+	Evo: function( targetObject, targetProperty, pe_range_function, pe_syntax_function, pe_bind_function, pe_shape_function, pe_state_value)
 	{
 		this.to = targetObject;
 		this.tp = targetProperty;				// 'style.top' for exemple
 		this.rf = pe_range_function;			// Function in charge of converting binding function value (0->1) to an other range (ev->sv)
 		this.yf = pe_syntax_function;			// Functions used to build the syntax of the value. adding 'px' for example.
-		this.bf = pe_bind_function;			// The function wich indicate the percent of evolution. (0->1 in general cases)
+		this.bf = pe_bind_function;			// The function which indicate the percent of evolution. (0->1 in general cases)
 		this.sf = pe_shape_function;			// This function make post treatment on the evolution to make it not linear
 
-		this.cUB = canUnderBound;				// Indicate if the evolution can go under the startValue
-		this.cHB = canHoverBound;				// Indicate if the evolution can overflow the endValue
-		this.iPe = isPersitent;					// Indicate if the evolution must be deleted once the endValue is overFlowed
+		this.stv = pe_state_value;				// Indicate which controls must be applied on the evolution
 
 		this.cbf = null;
 
 		// --- interne ---
 		this.uid = ++pe.conf.counter;; 		// Identifiant unique de l'animation
+
+		this.cUB = this.stv & pe.state.canUnderBound;
+		this.cHB = this.stv & pe.state.canHoverBound;
+		this.iPe = this.stv & pe.state.isPersitent;
 	},
 
 	//===| PoyoEvo configuration
@@ -80,7 +82,14 @@ var pe = {
 
 		setTimeout(pe.start, pe.conf.refreshTime);
 	},
-
+	
+	//===| state values
+	state: {
+		canUnderBound: parseInt('1', 2),			// Indicate if the evolution can go under the startValue
+		canHoverBound: parseInt('10', 2),		// Indicate if the evolution can overflow the endValue
+		isPersitent:  parseInt('100', 2),		// Indicate if the evolution must be deleted once the endValue is overFlowed
+		removeDoubles:  parseInt('1000', 2)		// Indicate if this evolution must remove doubles when it is created
+	},
 
 	//===| range functions
 	range: {
@@ -367,21 +376,24 @@ var pe = {
 	addEvo: {
 
 		// Controle maximum de l'évolution crée ... Cette fonction est utilisée par toutes les fonctions ci-dessous
-		cpl: function( targetObject, targetProperty, pe_range_function, pe_syntax_function, pe_bind_function, pe_shape_function, canUnderBound, canHoverBound, isPersitent, removeDoubles/*=false*/)
+		cpl: function( targetObject, targetProperty, pe_range_function, pe_syntax_function, pe_bind_function, pe_shape_function, pe_state_value/*optional*/)
 		{
+			if( pe_state_value == undefined)
+				pe_state_value = 0;
+			
 			if( targetObject instanceof Array || targetObject instanceof NodeList)
 			{
 				var unids = [];
 				for(var i=0; i < targetObject.length; ++i)
-					unids.push( pe.addEvo.cpl( targetObject[i], targetProperty, pe_range_function, pe_syntax_function, pe_bind_function, pe_shape_function, canUnderBound, canHoverBound, isPersitent, removeDoubles));
+					unids.push( pe.addEvo.cpl( targetObject[i], targetProperty, pe_range_function, pe_syntax_function, pe_bind_function, pe_shape_function, pe_state_value));
 				return unids;
 			}
 			else
 			{
-				if( removeDoubles != undefined && removeDoubles)
+				if( pe_state_value & pe.state.removeDoubles)
 					pe.aux.deleteConflictualEvo( targetObject, targetProperty);
 
-				var evo = new pe.Evo( targetObject, targetProperty, pe_range_function, pe_syntax_function, pe_bind_function, pe_shape_function, canUnderBound, canHoverBound, isPersitent);
+				var evo = new pe.Evo( targetObject, targetProperty, pe_range_function, pe_syntax_function, pe_bind_function, pe_shape_function, pe_state_value);
 				pe.conf.listOfEvos.push( evo);
 
 				return evo.uid;
@@ -389,15 +401,17 @@ var pe = {
 		},
 
 		// Création d'une évolution standard ...
-		std: function( targetObject, targetProperty, startValue, endValue, pe_syntax_function, pe_bind_function, pe_shape_function, canUnderBound, canHoverBound, isPersitent, removeDoubles/*=false*/)
+		std: function( targetObject, targetProperty, startValue, endValue, pe_syntax_function, pe_bind_function, pe_shape_function, pe_state_value)
 		{
-			return pe.addEvo.cpl( targetObject, targetProperty, pe.range.fixed(startValue, endValue), pe_syntax_function, pe_bind_function, pe_shape_function, canUnderBound, canHoverBound, isPersitent, removeDoubles);
+			return pe.addEvo.cpl( targetObject, targetProperty, pe.range.fixed(startValue, endValue), pe_syntax_function, pe_bind_function, pe_shape_function, pe_state_value);
 		},
 
 		// fonction dédiée aux évolutions de type animations temporelles.
 		ani: function( targetObject, targetProperty, startValue, endValue, pe_syntax_function, deltaTime, length, pe_shape_function, removeDoubles/*=false*/)
 		{
-			return pe.addEvo.cpl( targetObject, targetProperty, pe.range.fixed(startValue, endValue), pe_syntax_function, pe.bind.time( deltaTime, length), pe_shape_function, false, false, false, removeDoubles);
+			var pe_state_value = removeDoubles ? pe.state.removeDoubles : 0;
+			
+			return pe.addEvo.cpl( targetObject, targetProperty, pe.range.fixed(startValue, endValue), pe_syntax_function, pe.bind.time( deltaTime, length), pe_shape_function, pe_state_value);
 		},
 
 
@@ -411,13 +425,22 @@ var pe = {
 					targetDiv[i].style.backgroundImage = "url('" + img_sprite + "')";
 			else
 				targetDiv.style.backgroundImage = "url('" + img_sprite + "')";
-
-			return pe.addEvo.cpl( targetDiv, "style.backgroundPosition", pe.range.fixed(0, nb_img*px_space), pe.syntax.suffix("px 0px"), pe.bind.stepTime(nb_img, timespace), pe.shape.linear, false, false, true, removeDoubles);
+			
+			var pe_state_value = removeDoubles ? pe.state.removeDoubles : 0;
+			pe_state_value |= pe.state.isPersitent;
+			
+			return pe.addEvo.cpl( targetDiv, "style.backgroundPosition", pe.range.fixed(0, nb_img*px_space), pe.syntax.suffix("px 0px"), pe.bind.stepTime(nb_img, timespace), pe.shape.linear, pe_state_value);
 		},
 
 		// Démare un Drag & Drop sur l'objet "targetObjet". callBackFunction est appelée au moment du Drop.
 		dragDrop: function( targetObject, callBackFunction/*optionel*/)
 		{
+			// Computing pe_state_value
+			var pe_state_value = pe.state.isPersitent;
+			pe_state_value |= pe.state.canUnderBound;
+			pe_state_value |= pe.state.canHoverBound;
+			pe_state_value |= pe.state.removeDoubles;
+			
 			// Computing offset
 			var offset = poyoCore_getAbsPos( targetObject.parentNode);
 			if(poyoCore_mouse.trackerStarted)
@@ -495,7 +518,8 @@ var pe = {
 			pe.addEvo.std( targetObject, "style.background-position", range.low, range.high,
 				pe.syntax.bgPosition( gebid("img"), "y", "%"),
 				pe.overLay.expand( pe.bind.scrollBar( document.body, "y", speed), objSection),
-				pe.shape.linear, false, false, true, true);
+				pe.shape.linear,
+				pe.state.isPersitent | pe.state.removeDoubles);
 		}
 	},
 
