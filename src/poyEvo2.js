@@ -18,7 +18,7 @@
 var pe = {
 
 	//===| PoyEvo Class
-	Evo: function( targetObject, targetProperty, pe_range_function, pe_syntax_function, pe_bind_function, pe_shape_function, canUnderBound, canHoverBound, isPersitent, unid)
+	Evo: function( targetObject, targetProperty, pe_range_function, pe_syntax_function, pe_bind_function, pe_shape_function, canUnderBound, canHoverBound, isPersitent)
 	{
 		this.to = targetObject;
 		this.tp = targetProperty;				// 'style.top' for exemple
@@ -34,7 +34,7 @@ var pe = {
 		this.cbf = null;
 
 		// --- interne ---
-		this.uid = unid; 						// Identifiant unique de l'animation
+		this.uid = ++pe.conf.counter;; 		// Identifiant unique de l'animation
 	},
 
 	//===| PoyoEvo configuration
@@ -55,7 +55,7 @@ var pe = {
 		for( i = 0; i < pe.conf.listOfEvos.length; ++i)
 		{
 			var iEvo = pe.conf.listOfEvos[i];
-			var p = iEvo.sf( iEvo.bf());
+			var p = iEvo.bf();
 
 			if( p<0 && !iEvo.cUB)
 			{
@@ -73,6 +73,7 @@ var pe = {
 			}
 			else
 			{
+				p = iEvo.sf( p);
 				poyoCore_setAtribute( iEvo.to, iEvo.tp, iEvo.yf( iEvo.rf(p)));
 			}
 		}
@@ -148,17 +149,28 @@ var pe = {
 
 	//===| Shape functions
 	shape: {
-		linear:
-			function(){return arguments[0];},
+		linear: function()
+		{
+			return arguments[0];
+		},
 		
-		sin:
-			function( ){return 0.5*( 1 + Math.sin(Math.PI*arguments[0] - Math.PI/2));},
+		sin: function()
+		{
+			var p = arguments[0];
+			return p + (Math.sin(2 * Math.PI * p - Math.PI)) / (2 * Math.PI);
+		},
 		
-		asin:
-			function( ){return 0.5 + (1/Math.PI)*Math.asin(2*arguments[0]-1);},
+		asin: function()
+		{
+			var p = arguments[0];
+			return p + (Math.sin(2 * Math.PI * p)) / (2 * Math.PI);
+		},
 		
-		ela:
-			function( ){var p = arguments[0]; return Math.sqrt(p)+(1-p)*Math.sin(p*4*Math.PI/3);},
+		ela: function()
+		{
+			var p = arguments[0];
+			return Math.sqrt(p)+(1-p)*Math.sin(p*4*Math.PI/3);
+		},
 		
 		pow: function( f)
 		{
@@ -171,18 +183,6 @@ var pe = {
 		},
 		
 		//===| overlay shape functions
-		
-		// Redéfini la plage d'annimation (section : {low:0, high:1})
-		// Agit comme une surcouche pour une autre shape function
-		expand: function( shape_function, section)
-		{
-			return function( p){
-				p -= section.low;
-				p /= section.high - section.low;
-				
-				return shape_function( p);
-			};
-		},
 		
 		// Change a linear evolution to step one
 		// steps : step number
@@ -327,6 +327,24 @@ var pe = {
 			}
 		}
 	},
+	
+	//===| Overlay functions
+	overLay: {
+		// Redéfini la plage d'animation
+		// Agit comme une surcouche pour une bind function
+		// section : {low:0, high:1}
+		expand: function( bind_function, section)
+		{
+			return function( ){
+				var p = bind_function();
+				
+				p -= section.low;
+				p /= section.high - section.low;
+				
+				return p;
+			};
+		},
+	},
 
 	//===| User functions
 	delEvo: function( unid)
@@ -363,10 +381,10 @@ var pe = {
 				if( removeDoubles != undefined && removeDoubles)
 					pe.aux.deleteConflictualEvo( targetObject, targetProperty);
 
-				var unid = ++pe.conf.counter;
-				pe.conf.listOfEvos.push( new pe.Evo( targetObject, targetProperty, pe_range_function, pe_syntax_function, pe_bind_function, pe_shape_function, canUnderBound, canHoverBound, isPersitent, unid));
+				var evo = new pe.Evo( targetObject, targetProperty, pe_range_function, pe_syntax_function, pe_bind_function, pe_shape_function, canUnderBound, canHoverBound, isPersitent);
+				pe.conf.listOfEvos.push( evo);
 
-				return unid;
+				return evo.uid;
 			}
 		},
 
@@ -476,8 +494,8 @@ var pe = {
 
 			pe.addEvo.std( targetObject, "style.background-position", range.low, range.high,
 				pe.syntax.bgPosition( gebid("img"), "y", "%"),
-				pe.bind.scrollBar( document.body, "y", speed),
-				pe.shape.expand( pe.shape.linear, objSection), false, false, true, true);
+				pe.overLay.expand( pe.bind.scrollBar( document.body, "y", speed), objSection),
+				pe.shape.linear, false, false, true, true);
 		}
 	},
 

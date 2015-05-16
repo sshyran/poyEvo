@@ -39,16 +39,17 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.5888896"
-     inkscape:cx="288.44867"
+     inkscape:cx="190.89627"
      inkscape:cy="740.45725"
      inkscape:document-units="px"
-     inkscape:current-layer="g4254"
+     inkscape:current-layer="layer1"
      showgrid="false"
      inkscape:window-width="1920"
      inkscape:window-height="1027"
      inkscape:window-x="-8"
      inkscape:window-y="-8"
-     inkscape:window-maximized="1" />
+     inkscape:window-maximized="1"
+     showguides="false" />
   <metadata
      id="metadata7">
     <rdf:RDF>
@@ -65,6 +66,29 @@
      inkscape:label="Calque 1"
      inkscape:groupmode="layer"
      id="layer1">
+    <g
+       transform="translate(132.62467,-557.19684)"
+       id="g4185">
+      <rect
+         style="fill:#999999;fill-opacity:0.71493213;stroke:#000000;stroke-width:0.99999988;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:2.99999964,2.99999964;stroke-dashoffset:0"
+         id="rect4187"
+         width="320.1188"
+         height="43"
+         x="113.74799"
+         y="647.74536"
+         ry="0.012480264" />
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-weight:normal;font-size:16px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+         x="278.12073"
+         y="674.04718"
+         id="text4189"
+         sodipodi:linespacing="125%"><tspan
+           sodipodi:role="line"
+           id="tspan4191"
+           x="278.12073"
+           y="674.04718">pe.overlay.function</tspan></text>
+    </g>
     <g
        transform="translate(-8.72704,-195.40682)"
        id="g4446">
@@ -109,7 +133,7 @@
            y="672.04718"
            x="128.12074"
            id="tspan3757"
-           sodipodi:role="line">pe_bind_function</tspan></text>
+           sodipodi:role="line">pe.bind.function</tspan></text>
     </g>
     <g
        transform="translate(131.27296,-455.40682)"
@@ -132,7 +156,7 @@
            sodipodi:role="line"
            id="tspan3770"
            x="122.12074"
-           y="672.04718">pe_shape_function</tspan></text>
+           y="672.04718">pe.shape.function</tspan></text>
     </g>
     <text
        xml:space="preserve"
@@ -177,7 +201,7 @@
            y="672.04718"
            x="122.12074"
            id="tspan3786"
-           sodipodi:role="line">pe_range_function</tspan></text>
+           sodipodi:role="line">pe.range.function</tspan></text>
     </g>
     <text
        xml:space="preserve"
@@ -211,7 +235,7 @@
            sodipodi:role="line"
            id="tspan3798"
            x="116.90397"
-           y="672.04718">pe_syntax_function</tspan></text>
+           y="672.04718">pe.syntax.function</tspan></text>
     </g>
     <text
        sodipodi:linespacing="125%"
@@ -226,7 +250,7 @@
          sodipodi:role="line">string? (sv- .. ev+)</tspan></text>
     <path
        style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Mend)"
-       d="m 327.75182,131.54852 -0.37676,60.79002"
+       d="m 327.60853,131.54852 -0.82343,60.79002"
        id="path3804"
        inkscape:connector-type="polyline"
        inkscape:connector-curvature="0"
@@ -236,7 +260,7 @@
        inkscape:connection-end-point="d4" />
     <path
        style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Mend)"
-       d="m 327.42483,231.33854 0.53375,61"
+       d="m 326.52096,231.33854 0,61"
        id="path3806"
        inkscape:connector-type="polyline"
        inkscape:connector-curvature="0"
@@ -246,7 +270,7 @@
        inkscape:connection-end-point="d4" />
     <path
        style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Mend)"
-       d="m 328.63804,331.33854 1.59171,61"
+       d="m 326.52096,331.33854 0,61"
        id="path3808"
        inkscape:connector-type="polyline"
        inkscape:connector-curvature="0"
@@ -276,10 +300,26 @@
            x="140.12074"
            id="tspan4260"
            sodipodi:role="line">targetProperty</tspan></text>
+      <path
+         style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:8, 8;stroke-dashoffset:0;stroke-opacity:1"
+         d="m -41.902375,353.57359 281.328545,0"
+         id="path4179"
+         inkscape:connector-curvature="0" />
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-weight:normal;font-size:16px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         x="-62.671589"
+         y="349.168"
+         id="text4181"
+         sodipodi:linespacing="125%"><tspan
+           sodipodi:role="line"
+           id="tspan4183"
+           x="-62.671589"
+           y="349.168">Over/under bound control</tspan></text>
     </g>
     <path
        style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Mend)"
-       d="m 329.71054,431.33854 -2.16153,41"
+       d="m 326.52096,431.33854 0,41"
        id="path4262"
        inkscape:connector-type="polyline"
        inkscape:connector-curvature="0"
