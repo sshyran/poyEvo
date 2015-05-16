@@ -38,11 +38,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.76969699"
-     inkscape:cx="-30.059047"
-     inkscape:cy="578.14959"
+     inkscape:zoom="1.5888896"
+     inkscape:cx="288.44867"
+     inkscape:cy="740.45725"
      inkscape:document-units="px"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="g4254"
      showgrid="false"
      inkscape:window-width="1920"
      inkscape:window-height="1027"
@@ -78,14 +78,14 @@
          ry="0.011319309" />
       <text
          xml:space="preserve"
-         style="font-size:16px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-         x="152.12074"
+         style="font-style:normal;font-weight:normal;font-size:16px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+         x="142.12074"
          y="672.04718"
          id="text4450"
          sodipodi:linespacing="125%"><tspan
            sodipodi:role="line"
            id="tspan4452"
-           x="152.12074"
+           x="142.12074"
            y="672.04718">targetObject</tspan></text>
     </g>
     <g
@@ -103,11 +103,11 @@
          sodipodi:linespacing="125%"
          id="text3755"
          y="672.04718"
-         x="134.12074"
-         style="font-size:16px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         x="128.12074"
+         style="font-style:normal;font-weight:normal;font-size:16px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
          xml:space="preserve"><tspan
            y="672.04718"
-           x="134.12074"
+           x="128.12074"
            id="tspan3757"
            sodipodi:role="line">pe_bind_function</tspan></text>
     </g>
@@ -124,15 +124,15 @@
          ry="0.011319309" />
       <text
          xml:space="preserve"
-         style="font-size:16px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-         x="130.12074"
+         style="font-style:normal;font-weight:normal;font-size:16px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+         x="122.12074"
          y="672.04718"
          id="text3768"
          sodipodi:linespacing="125%"><tspan
            sodipodi:role="line"
            id="tspan3770"
-           x="130.12074"
-           y="672.04718">pe_range_function</tspan></text>
+           x="122.12074"
+           y="672.04718">pe_shape_function</tspan></text>
     </g>
     <text
        xml:space="preserve"
@@ -150,12 +150,12 @@
        id="text3776"
        y="266.29919"
        x="330.4252"
-       style="font-size:16px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#0000ff;fill-opacity:1;stroke:none;font-family:Sans"
+       style="font-style:normal;font-weight:normal;font-size:16px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#0000ff;fill-opacity:1;stroke:none"
        xml:space="preserve"><tspan
          y="266.29919"
          x="330.4252"
          id="tspan3778"
-         sodipodi:role="line">int (sv .. ev)</tspan></text>
+         sodipodi:role="line">int (0- .. 1+)</tspan></text>
     <g
        id="g3780"
        transform="translate(131.27296,-355.40682)">
@@ -171,13 +171,13 @@
          sodipodi:linespacing="125%"
          id="text3784"
          y="672.04718"
-         x="130.12074"
-         style="font-size:16px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         x="122.12074"
+         style="font-style:normal;font-weight:normal;font-size:16px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
          xml:space="preserve"><tspan
            y="672.04718"
-           x="130.12074"
+           x="122.12074"
            id="tspan3786"
-           sodipodi:role="line">pe_shape_function</tspan></text>
+           sodipodi:role="line">pe_range_function</tspan></text>
     </g>
     <text
        xml:space="preserve"
@@ -203,14 +203,14 @@
          ry="0.011319309" />
       <text
          xml:space="preserve"
-         style="font-size:16px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-         x="130.12074"
+         style="font-style:normal;font-weight:normal;font-size:16px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+         x="116.90397"
          y="672.04718"
          id="text3796"
          sodipodi:linespacing="125%"><tspan
            sodipodi:role="line"
            id="tspan3798"
-           x="130.12074"
+           x="116.90397"
            y="672.04718">pe_syntax_function</tspan></text>
     </g>
     <text
@@ -269,11 +269,11 @@
          sodipodi:linespacing="125%"
          id="text4258"
          y="672.04718"
-         x="146.12074"
-         style="font-size:16px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         x="140.12074"
+         style="font-style:normal;font-weight:normal;font-size:16px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
          xml:space="preserve"><tspan
            y="672.04718"
-           x="146.12074"
+           x="140.12074"
            id="tspan4260"
            sodipodi:role="line">targetProperty</tspan></text>
     </g>
