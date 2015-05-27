@@ -9,8 +9,8 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="744.09448"
-   height="1052.3622"
+   width="497.49167"
+   height="421.79001"
    id="svg2"
    version="1.1"
    inkscape:version="0.91 r13725"
@@ -20,15 +20,16 @@
     <marker
        inkscape:stockid="Arrow1Mend"
        orient="auto"
-       refY="0.0"
-       refX="0.0"
+       refY="0"
+       refX="0"
        id="Arrow1Mend"
-       style="overflow:visible;">
+       style="overflow:visible">
       <path
          id="path3823"
-         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
-         style="fill-rule:evenodd;stroke:#000000;stroke-width:1.0pt;"
-         transform="scale(0.4) rotate(180) translate(10,0)" />
+         d="M 0,0 5,-5 -12.5,0 5,5 0,0 Z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
+         transform="matrix(-0.4,0,0,-0.4,-4,0)"
+         inkscape:connector-curvature="0" />
     </marker>
   </defs>
   <sodipodi:namedview
@@ -38,9 +39,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.5888896"
-     inkscape:cx="190.89627"
-     inkscape:cy="740.45725"
+     inkscape:zoom="0.3972224"
+     inkscape:cx="533.92986"
+     inkscape:cy="61.77503"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -49,7 +50,11 @@
      inkscape:window-x="-8"
      inkscape:window-y="-8"
      inkscape:window-maximized="1"
-     showguides="false" />
+     showguides="false"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0" />
   <metadata
      id="metadata7">
     <rdf:RDF>
@@ -58,19 +63,20 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
   <g
      inkscape:label="Calque 1"
      inkscape:groupmode="layer"
-     id="layer1">
+     id="layer1"
+     transform="translate(-69.499809,-90.048521)">
     <g
        transform="translate(132.62467,-557.19684)"
        id="g4185">
       <rect
-         style="fill:#999999;fill-opacity:0.71493213;stroke:#000000;stroke-width:0.99999988;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:2.99999964,2.99999964;stroke-dashoffset:0"
+         style="fill:#999999;fill-opacity:0.71493213;stroke:#000000;stroke-width:0.99999988;stroke-miterlimit:4;stroke-dasharray:2.99999964, 2.99999964;stroke-dashoffset:0;stroke-opacity:1"
          id="rect4187"
          width="320.1188"
          height="43"
@@ -160,7 +166,7 @@
     </g>
     <text
        xml:space="preserve"
-       style="font-size:16px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#0000ff;fill-opacity:1;stroke:none;font-family:Sans"
+       style="font-style:normal;font-weight:normal;font-size:16px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#0000ff;fill-opacity:1;stroke:none"
        x="331.51968"
        y="167.59842"
        id="text3772"
@@ -205,7 +211,7 @@
     </g>
     <text
        xml:space="preserve"
-       style="font-size:16px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#0000ff;fill-opacity:1;stroke:none;font-family:Sans"
+       style="font-style:normal;font-weight:normal;font-size:16px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#0000ff;fill-opacity:1;stroke:none"
        x="332.4252"
        y="364.29919"
        id="text3788"
@@ -242,7 +248,7 @@
        id="text3800"
        y="456.29919"
        x="334.4252"
-       style="font-size:16px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#0000ff;fill-opacity:1;stroke:none;font-family:Sans"
+       style="font-style:normal;font-weight:normal;font-size:16px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#0000ff;fill-opacity:1;stroke:none"
        xml:space="preserve"><tspan
          y="456.29919"
          x="334.4252"
@@ -288,7 +294,7 @@
          height="39"
          width="159"
          id="rect4256"
-         style="fill:#d3d3d3;fill-opacity:0.71493214;stroke:#000000;stroke-width:0.99999987999999995;stroke-opacity:1" />
+         style="fill:#d3d3d3;fill-opacity:0.71493213;stroke:#000000;stroke-width:0.99999988;stroke-opacity:1" />
       <text
          sodipodi:linespacing="125%"
          id="text4258"
@@ -319,7 +325,7 @@
     </g>
     <path
        style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Mend)"
-       d="m 326.52096,431.33854 0,41"
+       d="m 303.544,392.33854 -65.53362,-55.6168"
        id="path4262"
        inkscape:connector-type="polyline"
        inkscape:connector-curvature="0"

@@ -32,7 +32,7 @@ var pe = {
 		this.cbf = null;
 
 		// --- interne ---
-		this.uid = ++pe.conf.counter;; 		// Identifiant unique de l'animation
+		this.uid = ++pe.conf.counter; 		// Identifiant unique de l'animation
 
 		this.cUB = this.stv & pe.state.canUnderBound;
 		this.cHB = this.stv & pe.state.canHoverBound;
@@ -46,7 +46,7 @@ var pe = {
 
 		//===| Internal Parameters |===//
 		'counter':0,
-		'listOfEvos':new Array() 			// List the evos curently in process
+		'listOfEvos':[] 			// List the evos curently in process
 	},
 
 	//===| IDLE function
@@ -69,7 +69,7 @@ var pe = {
 				if( !iEvo.iPe)
 				{
 					pe.conf.listOfEvos.splice( i, 1);
-					if( iEvo.cbf != null) iEvo.cbf();
+					if( iEvo.cbf !== null) iEvo.cbf();
 					--i;
 				}
 			}
@@ -82,7 +82,7 @@ var pe = {
 
 		setTimeout(pe.start, pe.conf.refreshTime);
 	},
-	
+
 	//===| state values
 	state: {
 		canUnderBound: parseInt('1', 2),			// Indicate if the evolution can go under the startValue
@@ -98,7 +98,7 @@ var pe = {
 			return function( v)
 			{
 				return ((1-v)*startValue + v*endValue);
-			}
+			};
 		},
 
 		dynamic: function( startFunction, endFunction)
@@ -106,7 +106,7 @@ var pe = {
 			return function( v)
 			{
 				return ((1-v)*startFunction() + v*endFunction());
-			}
+			};
 		}
 	},
 
@@ -117,7 +117,7 @@ var pe = {
 			return function( v)
 			{
 				return prefix + "" + v + "" + suffix;
-			}
+			};
 		},
 
 		suffix: function( suffix)
@@ -140,10 +140,10 @@ var pe = {
 		{
 			return function( v)
 			{
-				if( targetObject.style.backgroundPosition == "")
+				if( targetObject.style.backgroundPosition === "")
 					targetObject.style.backgroundPosition = "center center";
-				
-				var bgpos = targetObject.style.backgroundPosition.split(" ")
+
+				var bgpos = targetObject.style.backgroundPosition.split(" ");
 				if( axe == "x")
 				{
 					return v + ext + " " + bgpos[1];
@@ -152,7 +152,7 @@ var pe = {
 				{
 					return bgpos[0] + " " + v + ext;
 				}
-			}
+			};
 		}
 	},
 
@@ -162,45 +162,46 @@ var pe = {
 		{
 			return arguments[0];
 		},
-		
+
 		sin: function()
 		{
 			var p = arguments[0];
 			return p + (Math.sin(2 * Math.PI * p - Math.PI)) / (2 * Math.PI);
 		},
-		
+
 		asin: function()
 		{
 			var p = arguments[0];
 			return p + (Math.sin(2 * Math.PI * p)) / (2 * Math.PI);
 		},
-		
+
 		ela: function()
 		{
 			var p = arguments[0];
 			return Math.sqrt(p)+(1-p)*Math.sin(p*4*Math.PI/3);
 		},
-		
+
 		pow: function( f)
 		{
-			return function( p){return Math.pow(p, f);}
+			return function( p){return Math.pow(p, f);};
 		},
-		
+
 		apow: function( f)
 		{
-			return function( p){return 1-Math.pow(1-p, f);}
+			return function( p){return 1-Math.pow(1-p, f);};
 		},
-		
+
 		//===| overlay shape functions
-		
+
 		// Change a linear evolution to step one
 		// steps : step number
 		step: function( shape_function, steps)
 		{
 			return function( p){
 				p = shape_function( p);
-				
-				return p = parseInt( p*steps)/steps;
+				p = parseInt( p*steps)/steps;
+
+				return p;
 			};
 		}
 	},
@@ -221,7 +222,7 @@ var pe = {
 				actime = actime.getTime();
 
 				return (actime - startTime) / (endTime - startTime);
-			}
+			};
 		},
 
 		// deltaTime écart de temp entre chaque évolution
@@ -239,7 +240,7 @@ var pe = {
 				at = Math.abs(at-p/2) - deltaTime/2; // signal triangulaire
 
 				return at / length;
-			}
+			};
 		},
 
 		// fonction escalier rotative : utile pour les sprites
@@ -257,7 +258,7 @@ var pe = {
 				at = parseInt((at/p)*steps);
 
 				return at / steps;
-			}
+			};
 		},
 
 		// Retourne un nombre aléatoire variant tous les steps appels
@@ -277,14 +278,14 @@ var pe = {
 				-- tirage;
 
 				return n;
-			}
+			};
 		},
 
 		mouse: function( axe, speed/*optionel*/)
 		{
 			poyoCore_trackMouse();
 
-			if( speed == undefined)
+			if( speed === undefined)
 				return pe.bind.property( poyoCore_mouse, axe, axe == "x" ? poyoCore_wWidth : poyoCore_wHeight);
 			else
 				return pe.bind.lazyProperty( poyoCore_mouse, axe, axe == "x" ? poyoCore_wWidth : poyoCore_wHeight, speed);
@@ -294,22 +295,30 @@ var pe = {
 		{
 			var property = axe == "x" ? "scrollLeft" : "scrollTop";
 
-			var rangeFtc; var ldb = document.body; var lde = document.documentElement
+			var rangeFtc; var ldb = document.body; var lde = document.documentElement;
 			if( element == ldb || element == lde) // element de type body
 			{
 				//gestion automatique des bugs liés au doctype pour simplifier l'utilisation, et la compatibilité ( document.documentElement <=> document.body)
 				window.scrollBy(1, 1);
-				(lde && lde.scrollTop) ? element = lde : element = ldb;
+				element = (lde && lde.scrollTop) ? lde : ldb;
 				window.scrollBy(-1, -1);
 
-				rangeFtc = axe == "x" ? function(){return element.scrollWidth - poyoCore_wWidth()} : function(){return element.scrollHeight - poyoCore_wHeight()};
+				rangeFtc = (axe == "x") ?
+						function(){return element.scrollWidth - poyoCore_wWidth();}
+					:
+						function(){return element.scrollHeight - poyoCore_wHeight();}
+					;
 			}
 			else // element de type classique (div, ...)
 			{
-				rangeFtc = axe == "x" ? function(){return element.scrollWidth - element.offsetWidth} : function(){return element.scrollHeight - element.offsetHeight};
+				rangeFtc = (axe == "x") ?
+					function(){return element.scrollWidth - element.offsetWidth;}
+				:
+					function(){return element.scrollHeight - element.offsetHeight;}
+				;
 			}
 
-			if( speed == undefined)
+			if( speed === undefined)
 				return pe.bind.property( element, property, rangeFtc);
 			else
 				return pe.bind.lazyProperty( element, property, rangeFtc, speed);
@@ -321,7 +330,7 @@ var pe = {
 			return function()
 			{
 				return poyoCore_getAtribute( element, property) / rangeFtc();
-			}
+			};
 		},
 
 		lazyProperty: function( element, property, rangeFtc, speed)
@@ -333,10 +342,10 @@ var pe = {
 				ov = (1-speed)*ov + speed*poyoCore_getAtribute( element, property);
 
 				return ov / rangeFtc();
-			}
+			};
 		}
 	},
-	
+
 	//===| Overlay functions
 	overLay: {
 		// Redéfini la plage d'animation
@@ -346,10 +355,10 @@ var pe = {
 		{
 			return function( ){
 				var p = bind_function();
-				
+
 				p -= section.low;
 				p /= section.high - section.low;
-				
+
 				return p;
 			};
 		},
@@ -367,7 +376,7 @@ var pe = {
 		{
 			var evoId = pe.aux.searchEvo( unid);
 
-			if( evoId!= null)
+			if( evoId !== null)
 				pe.conf.listOfEvos.splice( evoId, 1);
 		}
 	},
@@ -378,9 +387,9 @@ var pe = {
 		// Controle maximum de l'évolution crée ... Cette fonction est utilisée par toutes les fonctions ci-dessous
 		cpl: function( targetObject, targetProperty, pe_range_function, pe_syntax_function, pe_bind_function, pe_shape_function, pe_state_value/*optional*/)
 		{
-			if( pe_state_value == undefined)
+			if( pe_state_value === undefined)
 				pe_state_value = 0;
-			
+
 			if( targetObject instanceof Array || targetObject instanceof NodeList)
 			{
 				var unids = [];
@@ -410,7 +419,7 @@ var pe = {
 		ani: function( targetObject, targetProperty, startValue, endValue, pe_syntax_function, deltaTime, length, pe_shape_function, removeDoubles/*=false*/)
 		{
 			var pe_state_value = removeDoubles ? pe.state.removeDoubles : 0;
-			
+
 			return pe.addEvo.cpl( targetObject, targetProperty, pe.range.fixed(startValue, endValue), pe_syntax_function, pe.bind.time( deltaTime, length), pe_shape_function, pe_state_value);
 		},
 
@@ -425,10 +434,10 @@ var pe = {
 					targetDiv[i].style.backgroundImage = "url('" + img_sprite + "')";
 			else
 				targetDiv.style.backgroundImage = "url('" + img_sprite + "')";
-			
+
 			var pe_state_value = removeDoubles ? pe.state.removeDoubles : 0;
 			pe_state_value |= pe.state.isPersitent;
-			
+
 			return pe.addEvo.cpl( targetDiv, "style.backgroundPosition", pe.range.fixed(0, nb_img*px_space), pe.syntax.suffix("px 0px"), pe.bind.stepTime(nb_img, timespace), pe.shape.linear, pe_state_value);
 		},
 
@@ -440,12 +449,12 @@ var pe = {
 			pe_state_value |= pe.state.canUnderBound;
 			pe_state_value |= pe.state.canHoverBound;
 			pe_state_value |= pe.state.removeDoubles;
-			
+
 			// Computing offset
 			var offset = poyoCore_getAbsPos( targetObject.parentNode);
 			if(poyoCore_mouse.trackerStarted)
 			{
-				var pObj = poyoCore_getAbsPos( targetObject)
+				var pObj = poyoCore_getAbsPos( targetObject);
 
 				offset.x += poyoCore_mouse.x - pObj.x;
 				offset.y += poyoCore_mouse.y - pObj.y;
@@ -471,8 +480,8 @@ var pe = {
 			targetObject.style.cursor = "move";
 
 			// Defining events
-			var blockSelect = function(){return false;}
-			var activateSelect = function(){return true;}
+			var blockSelect = function(){return false;};
+			var activateSelect = function(){return true;};
 			var endDrag = function()
 			{
 				pe.delEvo( drx);
@@ -483,9 +492,9 @@ var pe = {
 				document.onmousedown = activateSelect;
 				targetObject.style.cursor = oldCursor;
 
-				if( callBackFunction != undefined)
+				if( callBackFunction !== undefined)
 					callBackFunction();
-			}
+			};
 
 			document.addEventListener("mouseup", endDrag);
 			document.onselectstart = blockSelect;
@@ -500,20 +509,19 @@ var pe = {
 			if( speed < 0)
 			{
 				speed = -speed;
-				range = {low:100, high:0}
+				range = {low:100, high:0};
 			}
-			
+
 			// calcul de la place en % occupée par l'objet
 			var objPos = poyoCore_getAbsPos( targetObject);
 			var scrollHeight = document.body.offsetHeight - poyoCore_wHeight(); // champ parcouru par la scrollbar (0->1)
 			var wHeight = poyoCore_wHeight() / scrollHeight; // champ % recouvert par la fenetre
-			
+
 			var objSection = {
 				low: objPos.y / scrollHeight,
 				high: (objPos.y + targetObject.offsetHeight - wHeight) / scrollHeight
-			}
+			};
 			objSection.low -= wHeight;
-			objSection.high;
 
 			pe.addEvo.std( targetObject, "style.background-position", range.low, range.high,
 				pe.syntax.bgPosition( gebid("img"), "y", "%"),
@@ -530,7 +538,7 @@ var pe = {
 		{
 			var evoId = pe.aux.searchEvo( unid);
 
-			if( evoId != null)
+			if( evoId !== null)
 				pe.conf.listOfEvos[evoId].cbf = callBackFunction;
 		}
 	},
@@ -540,7 +548,7 @@ var pe = {
 		searchEvo: function( unid)
 		{
 			for( var i=0; i<pe.conf.listOfEvos.length && pe.conf.listOfEvos[i].uid != unid; ++i);
-			return (pe.conf.listOfEvos[i].uid == unid ? i : null)
+			return (pe.conf.listOfEvos[i].uid == unid ? i : null);
 		},
 
 		// Supprime les annimations ayant pour cible le même objet et la même propriété
@@ -548,14 +556,14 @@ var pe = {
 		{
 			for( var i=pe.conf.listOfEvos.length-1; i>=0; --i)
 			{
-				if( targetObject == pe.conf.listOfEvos[i].to
-					&& targetProperty == pe.conf.listOfEvos[i].tp)
+				if( targetObject == pe.conf.listOfEvos[i].to &&
+					targetProperty == pe.conf.listOfEvos[i].tp)
 				{
 					pe.conf.listOfEvos.splice( i, 1);
 				}
 			}
 		}
 	}
-}
+};
 
 pe.start();

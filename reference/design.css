@@ -1,0 +1,53 @@
+body
+{
+	background-color: #EEE;
+}
+
+#fonctionalScheme
+{
+	margin: 20px;
+}
+
+#rawLib
+{
+	max-height: 200px;
+	overflow: auto;
+	background-color: black;
+	color: greenyellow;
+	border-radius: 20px;
+}
+
+fieldset
+{
+	background-color: rgba(100,100,100, 0.2);
+	border-left: none;
+	border-right: none;
+	margin: 10px;
+}
+
+fieldset:hover
+{
+	background-color: rgba(200,160,120, 0.5);
+}
+
+.hiddenFieldset
+{
+	height: 10px;
+	overflow: hidden;
+}
+
+legend
+{
+	background-color: rgba(100,50,0, 0.5);
+	border-left: 1px solid black;
+	border-right: 1px solid black;
+	font-weight: bold;
+	font-size: 25px;
+	color: white;
+	cursor: pointer;
+}
+
+legend:hover
+{
+	background-color: rgba(120,150,100, 0.5);
+}
