@@ -20,10 +20,13 @@ doc.conf.doc+='Some of them can be modificated directly here, and other are for 
 
 
 doc.start={};
-doc.start.doc='<b>IDLE function</b>This function is automatically called when lib file is included, and will loop until the page is unload.<br/>'
+doc.start.doc='<b>IDLE function</b><br/>'
+doc.start.doc+='This function is automatically called when lib file is included, and will loop until the page is unload.<br/>'
 doc.start.doc+='<u>This function must be called only one time ! Don\'t call it manually !</u>';
 doc.state={};
-doc.state.doc='<b>State values</b><br/>These values give indications on the operating mode of the evolution<br/>Several states can be combined using the boolean | operator';
+doc.state.doc='<b>State values</b><br/>'
+doc.state.doc+='These values give indications on the operating mode of the evolution<br/>'
+doc.state.doc+='Several states can be combined using the boolean | operator';
 	doc.state.canUnderBound={};
 	doc.state.canUnderBound.doc='Indicate if the evolution can go under the startValue';
 	doc.state.canHoverBound={};
@@ -34,14 +37,16 @@ doc.state.doc='<b>State values</b><br/>These values give indications on the oper
 	doc.state.removeDoubles.doc='Indicate if this evolution must remove doubles when it is created';
 
 doc.range={};
-doc.range.doc='<b>Range functions</b>Functions used to expand a bind value';
+doc.range.doc='<b>Range functions</b><br/>'
+doc.range.doc+='Functions used to expand a bind value';
 	doc.range.fixed={};
 	doc.range.fixed.doc='Classical range : indicate that property will evoluate between 2 fixes values';
 	doc.range.dynamic={};
-	doc.range.dynamic.doc='More flexible range : bound values can change during the evolution, and are given by functions';
+	doc.range.dynamic.doc='More flexible range : usefull when bound values are subject to change during the evolution';
 
 doc.syntax={};
-doc.syntax.doc='Transform an int to a property value like "5px", or "10%"';
+doc.syntax.doc='<b>Syntax value</b><br/>'
+doc.syntax.doc+='Transform an int to a property value like "5px", or "10%"';
 	doc.syntax.prefix_suffix={};
 	doc.syntax.prefix_suffix.doc='Prefix and suffix a value for example : 5 -> url("5.jpg")';
 	doc.syntax.suffix={};
@@ -54,7 +59,8 @@ doc.syntax.doc='Transform an int to a property value like "5px", or "10%"';
 	doc.syntax.bgPosition.doc='Put a value in background position format : 5 -> 0px 5px';
 
 doc.shape={};
-doc.shape.doc='Shape functions : give the evolution a non linear progression';
+doc.shape.doc='<b>Shape functions</b><br/>'
+doc.shape.doc+='Give to the evolution a non linear progression';
 	doc.shape.linear={};
 	doc.shape.linear.doc='Keep evolution as it is';
 	doc.shape.sin={};
@@ -71,7 +77,8 @@ doc.shape.doc='Shape functions : give the evolution a non linear progression';
 	doc.shape.step.doc='Give a step shape to the evolution';
 
 doc.bind={};
-doc.bind.doc='Bind functions : define which property will be the source of the evolution';
+doc.bind.doc='<b>Bind functions</b><br/>'
+doc.bind.doc+='define which property will be the source of the evolution';
 	doc.bind.time={};
 	doc.bind.time.doc='Time will be the source (classical animation)';
 	doc.bind.rotativeTime={};
@@ -90,35 +97,42 @@ doc.bind.doc='Bind functions : define which property will be the source of the e
 	doc.bind.lazyProperty.doc='Bind the property of an object with lazy effect';
 
 doc.overLay={};
-doc.overLay.doc='OverLay functions : Some situations needs to overlay the binding function';
+doc.overLay.doc='<b>OverLay functions</b><br/>'
+doc.overLay.doc+='Some situations needs to overlay the binding function.<br/>'
+doc.overLay.doc+='Have a look on the scheme to understand where it is used.';
 	doc.overLay.expand={};
 	doc.overLay.expand.doc='Expand the classical value of binding function (generaly 0->1)';
 
 doc.delEvo={};
-doc.delEvo.doc='TODO';
+doc.delEvo.doc='This function remove an existing evolution.<br/>'
+doc.delEvo.doc+='It should be used to clean persistant evos before to remove associated objects.<br/>'
+doc.delEvo.doc+='Or to stop runing evolutions before their end.<br/>'
+doc.delEvo.doc+='If you need to know which evos are running please use the integrated debug console';
 doc.addEvo={};
-doc.addEvo.doc='TODO';
+doc.addEvo.doc='Contains functions dedicated to the creation of evolutions.<br/>'
+doc.addEvo.doc+='The most complete one is "cpl". But the other make possible to create evolutions more simply.';
 	doc.addEvo.cpl={};
-	doc.addEvo.cpl.doc='TODO';
+	doc.addEvo.cpl.doc='The most complete function to create evolutions. Make possible to set the range function';
 	doc.addEvo.std={};
-	doc.addEvo.std.doc='TODO';
+	doc.addEvo.std.doc='Classical function to create evolutions. Use a fix range.';
 	doc.addEvo.ani={};
-	doc.addEvo.ani.doc='TODO';
+	doc.addEvo.ani.doc='This function is dedicated to the creation of simple animations. It bind the time to the animation';
 	doc.addEvo.sprite={};
-	doc.addEvo.sprite.doc='TODO';
+	doc.addEvo.sprite.doc='This function is specialised in sprite creation';
 	doc.addEvo.dragDrop={};
-	doc.addEvo.dragDrop.doc='TODO';
+	doc.addEvo.dragDrop.doc='This function is an all in one function dedicated to drag&drop';
 	doc.addEvo.bgEffect={};
-	doc.addEvo.bgEffect.doc='TODO';
+	doc.addEvo.bgEffect.doc='This function is an all in one function dedicated to background images animation effects';
 
 doc.setEvo={};
-doc.setEvo.doc='TODO';
+doc.setEvo.doc='Contains functions managing evolutions once they are created';
 	doc.setEvo.callBack={};
-	doc.setEvo.callBack.doc='TODO';
+	doc.setEvo.callBack.doc='Set a callBack function to an existing evo';
 
 doc.aux={};
-doc.aux.doc='TODO';
+doc.aux.doc='Contains functions intended for internal use';
 	doc.aux.searchEvo={};
-	doc.aux.searchEvo.doc='TODO';
+	doc.aux.searchEvo.doc='Search an evolution inside list of existing one, by id';
 	doc.aux.deleteConflictualEvo={};
-	doc.aux.deleteConflictualEvo.doc='TODO';
+	doc.aux.deleteConflictualEvo.doc='Remove evolutions that may enter in conflict with the one given';
+
