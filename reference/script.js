@@ -9,10 +9,24 @@ function toggleFieldset( event)
 {
 	var fieldset = $(this).parent();
 	
+	var evo = pe.addEvo.ani( fieldset.get( 0), "style.opacity", 1, 0, pe.syntax.none, 0, 500);
+	
 	if( fieldset.hasClass("hiddenFieldset"))
-		fieldset.removeClass("hiddenFieldset");
+	{
+		pe.setEvo.callBack( evo, function(){
+			fieldset.removeClass("hiddenFieldset");
+			fieldset.css("height", "");
+			pe.addEvo.ani( fieldset.get( 0), "style.opacity", 0, 1, pe.syntax.none, 0, 500);
+		})
+	}
 	else
-		fieldset.addClass("hiddenFieldset");
+	{
+		pe.setEvo.callBack( evo, function(){
+			fieldset.addClass("hiddenFieldset");
+			fieldset.css("height", "10px");
+			pe.addEvo.ani( fieldset.get( 0), "style.opacity", 0, 1, pe.syntax.none, 0, 500);
+		})
+	}
 }
 
 //===| Graphical view generation |===//

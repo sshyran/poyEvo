@@ -32,8 +32,8 @@ fieldset:hover
 
 .hiddenFieldset
 {
-	height: 10px;
 	overflow: hidden;
+	height: 10px;
 }
 
 legend
