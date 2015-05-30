@@ -217,12 +217,12 @@ var pe = {
 	//===| Binding functions
 	bind: {
 		// deltaTime durée avant le démarrage de l'évolution
-		time: function( deltaTime, length)
+		time: function( deltaTime, duration)
 		{
 			var reftime = new Date();
 			reftime = reftime.getTime();
 			var startTime = reftime + deltaTime;
-			var endTime = startTime + length;
+			var endTime = startTime + duration;
 
 			return function()
 			{
@@ -235,9 +235,9 @@ var pe = {
 
 		// deltaTime écart de temp entre chaque évolution
 		// phi : phase de l'évolution
-		rotativeTime: function( deltaTime, length, phi)
+		rotativeTime: function( deltaTime, duration, phi)
 		{
-			var p = 2*(deltaTime + length); // periode des oscilations
+			var p = 2*(deltaTime + duration); // periode des oscilations
 
 			return function()
 			{
@@ -247,16 +247,16 @@ var pe = {
 				at = at % p; // signal dent de scie
 				at = Math.abs(at-p/2) - deltaTime/2; // signal triangulaire
 
-				return at / length;
+				return at / duration;
 			};
 		},
 
 		// fonction escalier rotative : utile pour les sprites
 		// steps : nombre de pas
-		// length : durée de chaque pas !!! en nombre de raffraichissements !!!
-		stepTime: function(steps, length)
+		// duration : durée de chaque pas !!! en nombre de raffraichissements !!!
+		stepTime: function(steps, duration)
 		{
-			var p = steps*length*pe.conf.refreshTime; // periode des oscilations
+			var p = steps*duration*pe.conf.refreshTime; // periode des oscilations
 
 			return function()
 			{
@@ -426,11 +426,11 @@ var pe = {
 		},
 
 		// fonction dédiée aux évolutions de type animations temporelles.
-		ani: function( targetObject, targetProperty, startValue, endValue, pe_syntax_function, deltaTime, length, pe_shape_function, removeDoubles/*=false*/)
+		ani: function( targetObject, targetProperty, startValue, endValue, pe_syntax_function, deltaTime, duration, pe_shape_function, removeDoubles/*=false*/)
 		{
 			var pe_state_value = removeDoubles ? pe.state.rD : 0;
 
-			return pe.addEvo.cpl( targetObject, targetProperty, pe.range.fixed(startValue, endValue), pe_syntax_function, pe.bind.time( deltaTime, length), pe_shape_function, pe_state_value);
+			return pe.addEvo.cpl( targetObject, targetProperty, pe.range.fixed(startValue, endValue), pe_syntax_function, pe.bind.time( deltaTime, duration), pe_shape_function, pe_state_value);
 		},
 
 
@@ -538,6 +538,22 @@ var pe = {
 				pe.overLay.expand( pe.bind.scrollBar( document.body, "y", speed), objSection),
 				pe.shape.linear,
 				pe.state.iPE | pe.state.rD);
+		},
+		
+		fadeIn: function( targetObject, duration, removeDoubles/*=false*/)
+		{
+			targetObject.style.opacity = 0;
+			targetObject.style.display = "";
+			pe.addEvo.ani( targetObject, "style.opacity", 0, 1, pe.syntax.none, 0, duration, removeDoubles);
+		},
+		
+		fadeOut: function( targetObject, duration, removeDoubles/*=false*/)
+		{
+			var evo = pe.addEvo.ani( targetObject, "style.opacity", 1, 0, pe.syntax.none, 0, duration, removeDoubles);
+			
+			pe.setEvo.callBack( evo, function() {
+				targetObject.style.display = "none";
+			});
 		}
 	},
 
