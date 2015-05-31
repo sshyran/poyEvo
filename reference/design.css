@@ -3,6 +3,44 @@ body
 	background-color: #EEE;
 }
 
+#finalEvo, #chooser
+{
+	border-top: 2px solid black;
+	border-bottom: 2px solid black;
+	padding: 4px;
+	font-size: 16px;
+	color: #0F1;
+	background-color: #222;
+	font-family: Monospace;
+	display: inline-block;
+	vertical-align: middle;
+}
+
+#liveHelper
+{
+	background-color: #DDD;
+	color: #530;
+	padding: 4px;
+	margin: 4px;
+	font-size: 16px;
+}
+
+.btn
+{
+	cursor: pointer;
+	padding: 4px;
+	border-left: 2px solid #AF0;
+	margin-right: 2px;
+}
+.btn:hover
+{
+	background-color: rgba(255,255,255,0.4);
+	margin-left: 2px;
+	margin-right: 0px;
+	border-left: none;
+	border-right: 2px solid #AF0;
+}
+
 #fonctionalScheme
 {
 	margin: 20px;

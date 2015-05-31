@@ -231,6 +231,7 @@ doc.bind.doc+='define which property will be the source of the evolution';
 		doc.bind.mouse.params.speed={};
 		doc.bind.mouse.params.speed.type='int/float';
 		doc.bind.mouse.params.speed.doc='Speed taken by property to reach the mouse target value';
+		doc.bind.mouse.params.speed.comment='optionel';
 
 	doc.bind.scrollBar={};
 	doc.bind.scrollBar.doc='ScrollBar position will be the source of the evolution';
@@ -244,6 +245,7 @@ doc.bind.doc+='define which property will be the source of the evolution';
 		doc.bind.scrollBar.params.speed={};
 		doc.bind.scrollBar.params.speed.type='int/float';
 		doc.bind.scrollBar.params.speed.doc='Speed taken by property to reach the scrollbar target value';
+		doc.bind.scrollBar.params.speed.comment='optionel';
 
 	doc.bind.property={};
 	doc.bind.property.doc='Bind the property of an objet as source of evolution';
@@ -324,10 +326,11 @@ doc.addEvo.doc+='The most complete one is "cpl". But the other make possible to 
 		doc.addEvo.cpl.params.pe_shape_function={};
 		doc.addEvo.cpl.params.pe_shape_function.type='function';
 		doc.addEvo.cpl.params.pe_shape_function.doc='Function responsible of the shape. See : pe.shape';
+		doc.addEvo.cpl.params.pe_shape_function.comment='=linear';
 		doc.addEvo.cpl.params.pe_state_value={};
 		doc.addEvo.cpl.params.pe_state_value.type='int';
 		doc.addEvo.cpl.params.pe_state_value.doc='Value containing some behavior parameters on the evolution. See : pe.state';
-
+		doc.addEvo.cpl.params.pe_state_value.comment='optional';
 
 	doc.addEvo.std={};
 	doc.addEvo.std.doc='Classical function to create evolutions. Use a fix range.';
@@ -353,9 +356,11 @@ doc.addEvo.doc+='The most complete one is "cpl". But the other make possible to 
 		doc.addEvo.std.params.pe_shape_function={};
 		doc.addEvo.std.params.pe_shape_function.type='function';
 		doc.addEvo.std.params.pe_shape_function.doc='Function responsible of the shape. See : pe.shape';
+		doc.addEvo.std.params.pe_shape_function.comment='=linear';
 		doc.addEvo.std.params.pe_state_value={};
 		doc.addEvo.std.params.pe_state_value.type='int';
 		doc.addEvo.std.params.pe_state_value.doc='Value containing some behavior parameters on the evolution. See : pe.state';
+		doc.addEvo.std.params.pe_state_value.comment='optional';
 
 	doc.addEvo.ani={};
 	doc.addEvo.ani.doc='This function is dedicated to the creation of simple animations. It bind the time to the animation';
@@ -387,6 +392,7 @@ doc.addEvo.doc+='The most complete one is "cpl". But the other make possible to 
 		doc.addEvo.ani.params.removeDoubles={};
 		doc.addEvo.ani.params.removeDoubles.type='Boolean';
 		doc.addEvo.ani.params.removeDoubles.doc='Indicate if evolution must check if there is doubles when created';
+		doc.addEvo.ani.params.removeDoubles.comment='=false';
 
 	doc.addEvo.sprite={};
 	doc.addEvo.sprite.doc='This function is specialised in sprite creation';
@@ -409,6 +415,7 @@ doc.addEvo.doc+='The most complete one is "cpl". But the other make possible to 
 		doc.addEvo.sprite.params.removeDoubles={};
 		doc.addEvo.sprite.params.removeDoubles.type='Boolean';
 		doc.addEvo.sprite.params.removeDoubles.doc='Indicate if evolution must check if there is doubles when created';
+		doc.addEvo.sprite.params.removeDoubles.comment='=false';
 
 	doc.addEvo.dragDrop={};
 	doc.addEvo.dragDrop.doc='This function is an all in one function dedicated to drag&drop';
@@ -419,6 +426,7 @@ doc.addEvo.doc+='The most complete one is "cpl". But the other make possible to 
 		doc.addEvo.dragDrop.params.callBackFunction={};
 		doc.addEvo.dragDrop.params.callBackFunction.type='function';
 		doc.addEvo.dragDrop.params.callBackFunction.doc='Function to call when the element is dropped';
+		doc.addEvo.dragDrop.params.callBackFunction.comment='optionel';
 
 	doc.addEvo.bgEffect={};
 	doc.addEvo.bgEffect.doc='This function is an all in one function dedicated to background images animation effects';
@@ -429,6 +437,7 @@ doc.addEvo.doc+='The most complete one is "cpl". But the other make possible to 
 		doc.addEvo.bgEffect.params.speed={};
 		doc.addEvo.bgEffect.params.speed.type='int/float';
 		doc.addEvo.bgEffect.params.speed.doc='Speed taken by property to reach the scrollbar target value';
+		doc.addEvo.bgEffect.params.speed.comment='optionel';
 
 	doc.addEvo.fadeIn={};
 	doc.addEvo.fadeIn.doc='All in one function to realise a fade in effect';
@@ -442,6 +451,7 @@ doc.addEvo.doc+='The most complete one is "cpl". But the other make possible to 
 		doc.addEvo.fadeIn.params.removeDoubles={};
 		doc.addEvo.fadeIn.params.removeDoubles.type='Boolean';
 		doc.addEvo.fadeIn.params.removeDoubles.doc='Indicate if evolution must check if there is doubles when created';
+		doc.addEvo.fadeIn.params.removeDoubles.comment='=false';
 
 	doc.addEvo.fadeOut={};
 	doc.addEvo.fadeOut.doc='All in one function to realise a fade out effect';
@@ -455,6 +465,7 @@ doc.addEvo.doc+='The most complete one is "cpl". But the other make possible to 
 		doc.addEvo.fadeOut.params.removeDoubles={};
 		doc.addEvo.fadeOut.params.removeDoubles.type='Boolean';
 		doc.addEvo.fadeOut.params.removeDoubles.doc='Indicate if evolution must check if there is doubles when created';
+		doc.addEvo.fadeOut.params.removeDoubles.comment='=false';
 
 
 doc.setEvo={};

@@ -6,30 +6,86 @@ $( function(){
 })
 
 //===| Evo Builder |===//
-function chooseAdder( )
+//choices: array of remaining parameters to set
+function chooseAdder( choices/*optional*/, path/*optional*/)
 {
 	var chooser = gebid( "chooser");
+	var finalEvo = gebid( "finalEvo");
 	chooser.innerHTML = ""; 
 	
-	for (var adder in doc.addEvo) {
-		if (doc.addEvo.hasOwnProperty(adder) && adder != "doc") {
-			var radio = document.createElement( "input");
-			radio.type = "radio";
-			radio.id = "adder_" + adder;
-			radio.name = "param";
-			radio.value = adder;
-			
-			var label = document.createElement( "label");
-			label.setAttribute("for", "adder_" + adder);
-			label.innerHTML = adder;
-			
-			var br = document.createElement( "br");
-			
-			chooser.appendChild( radio);
-			chooser.appendChild( label);
-			chooser.appendChild( br);
+	if( choices === undefined)
+	{
+		finalEvo.innerHTML = "pe.addEvo.";
+		chooseAdder( pe.addEvo, "addEvo");
+	}
+	else
+	{
+		for (var choice in choices) {
+			if (choices.hasOwnProperty(choice)) {
+				var item = document.createElement( "div");
+				item.className = "btn";
+				item.innerHTML = choice;
+				
+				item.onclick = (function (localChoice) {
+					return function(){ functionFiller( path, localChoice)};
+				})(choice);
+				
+				item.onmouseover = (function( localDoc) {
+					return function(){ liveHelper(localDoc)};
+				})(getDoc( "doc." + path + "." + choice + ".doc"));
+				
+				item.onmouseout = function(){ liveHelper("")};
+				
+				chooser.appendChild( item);
+			}
 		}
 	}
+}
+
+function liveHelper( content)
+{
+	gebid("liveHelper").innerHTML = content;
+}
+
+//path.choice should always be a function
+function functionFiller( path, choice)
+{
+	var chooser = gebid( "chooser");
+	var finalEvo = gebid( "finalEvo");
+	var functionToFill = eval( "pe." + path + "." + choice);
+	
+	finalEvo.innerHTML += choice + "( ";
+	var params = doc[path][choice].params;
+	
+	
+	var fillFunctionStack = [];
+	for( var param in params) {
+		if (params.hasOwnProperty(param)) {
+			fillFunctionStack.push(
+				(function( localParam){
+					return function() {
+						chooser.innerHTML = localParam + " : ";
+
+						var inputTxt = document.createElement("input");
+						inputTxt.setAttribute( "type", "text");
+						inputTxt.onblur = function() {
+							var nextFct = fillFunctionStack.pop();
+							if( nextFct != undefined) {
+								finalEvo.innerHTML += this.value + ","
+								nextFct();
+							} else {
+								finalEvo.innerHTML += this.value + ")"
+								chooser.innerHTML = "";
+							}
+						};
+						chooser.appendChild( inputTxt);
+					}
+				})( param)
+			);
+		}
+	}
+	
+	fillFunctionStack.pop()();
 }
 
 //===| GUI functions |===//
@@ -83,8 +139,13 @@ function travelDoc( root)
 					for (var param in root[node].params) {
 						if (root[node].params.hasOwnProperty(param)) {
 							var paramObj = root[node].params[param];
-							msg += "<b>" + param + "</b> (<i>" + paramObj.type + "</i>): " + paramObj.doc + "<br/>";
-							++nbParams;
+							
+							msg += "<b>" + param + "</b> "
+							if( paramObj.comment != undefined)
+								msg += "<span style='color:#FFFF00;'>" + paramObj.comment + "</span> "
+							msg += "(<i>" + paramObj.type + "</i>): " + paramObj.doc + "<br/>";
+							
+								++nbParams;
 						}
 					}
 					
@@ -113,11 +174,31 @@ var STRIP_COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg;
 var ARGUMENT_NAMES = /([^\s,]+)/g;
 function getParamNames(func)
 {
-	var fnStr = func.toString().replace(STRIP_COMMENTS, '');
+	var fnStrCmts = func.toString()
+	var fnStr = fnStrCmts.toString().replace(STRIP_COMMENTS, '');
+	
 	var result = fnStr.slice(fnStr.indexOf('(')+1, fnStr.indexOf(')')).match(ARGUMENT_NAMES);
+	var resultCmts = fnStrCmts.slice(fnStrCmts.indexOf('(')+1, fnStrCmts.indexOf(')')).match(ARGUMENT_NAMES);
+	
 	if( result === null)
-		result = [];
-	return result;
+	{
+		return {
+			args: [],
+			cmts: []
+		};
+	}
+	else
+	{
+		for( var i=0; i<result.length; ++i) {
+			resultCmts[i] = resultCmts[i].replace( result[i], "");
+			resultCmts[i] = resultCmts[i].replace( /(\/\/)|(\/\*)|(\*\/)/g, '');
+		}
+		
+		return {
+			args: result,
+			cmts: resultCmts
+		};
+	}
 }
 
 function travelPe( root, level, offset)
@@ -156,13 +237,16 @@ function travelPe( root, level, offset)
 function travelArgs( fct, level, offset)
 {
 	var msg = "";
+	
 	var params = getParamNames( fct);
+	
 	offset += "\t";
 	
 	msg += offset + level + ".params={};\n"
-	for( var i=0; i<params.length; ++i)
+	for( var i=0; i<params.args.length; ++i)
 	{
-		var param = params[i];
+		var param = params.args[i];
+		var cmt = params.cmts[i];
 		
 		msg += offset + level + ".params." + param + "={};\n";
 		
@@ -171,6 +255,9 @@ function travelArgs( fct, level, offset)
 		
 		var predefinedContent = getDoc( level + ".params." + param + ".doc");
 		msg += offset + level + ".params." + param + ".doc='" + predefinedContent + "';\n";
+		
+		if( cmt != undefined && cmt != "")
+			msg += offset + level + ".params." + param + ".comment='" + cmt + "';\n";
 	}
 
 	return msg;
