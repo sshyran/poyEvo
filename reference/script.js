@@ -30,11 +30,9 @@ function chooseAdder( choices/*optional*/, path/*optional*/)
 					return function(){ functionFiller( path, localChoice)};
 				})(choice);
 				
-				item.onmouseover = (function( localDoc) {
-					return function(){ liveHelper(localDoc)};
-				})(getDoc( "doc." + path + "." + choice + ".doc"));
-				
-				item.onmouseout = function(){ liveHelper("")};
+				item.onmouseover = (function( localDoc, localChoice) {
+					return function(){ liveHelper( localChoice, localDoc)};
+				})(getDoc( "doc." + path + "." + choice + ".doc"), choice);
 				
 				chooser.appendChild( item);
 			}
@@ -42,9 +40,10 @@ function chooseAdder( choices/*optional*/, path/*optional*/)
 	}
 }
 
-function liveHelper( content)
+function liveHelper( title, content)
 {
-	gebid("liveHelper").innerHTML = content;
+	gebid("liveHelper").innerHTML = "<h4>" + title + "</h4>";
+	gebid("liveHelper").innerHTML += content;
 }
 
 //path.choice should always be a function
@@ -61,31 +60,56 @@ function functionFiller( path, choice)
 	var fillFunctionStack = [];
 	for( var param in params) {
 		if (params.hasOwnProperty(param)) {
+			
 			fillFunctionStack.push(
-				(function( localParam){
+				(function( localParam, paramInfos){
 					return function() {
-						chooser.innerHTML = localParam + " : ";
-
+						chooser.innerHTML = "<span style='color:#FD0;'>" + localParam + "</span> : ";
+						
+						var helpMsg = "(<b>" + paramInfos.type + "</b>) ";
+						if( paramInfos.comment != undefined)
+							helpMsg += "<i>" + paramInfos.comment + "</i> ";
+						helpMsg += paramInfos.doc;
+						liveHelper( localParam, helpMsg);
+						
 						var inputTxt = document.createElement("input");
 						inputTxt.setAttribute( "type", "text");
-						inputTxt.onblur = function() {
-							var nextFct = fillFunctionStack.pop();
-							if( nextFct != undefined) {
-								finalEvo.innerHTML += this.value + ","
-								nextFct();
-							} else {
-								finalEvo.innerHTML += this.value + ")"
-								chooser.innerHTML = "";
+						
+						inputTxt.onkeydown = function(event) {
+							if( event.keyCode == 13) { // parameter chosed
+								var nextFct = fillFunctionStack.shift();
+								finalEvo.innerHTML += this.value;
+								if( nextFct != undefined) {
+									// Still some parameters to chose
+									finalEvo.innerHTML += ",";
+									nextFct();
+								} else {
+									// No more parameters to choose
+									finalEvo.innerHTML += ")";
+									chooser.innerHTML = "Your command is ready to play. ";
+									liveHelper( "");
+									
+									var resetBtn = document.createElement( "div");
+									resetBtn.className = "btn";
+									resetBtn.innerHTML = "Reset ?"
+									resetBtn.onclick = function(){ chooseAdder()};
+									resetBtn.style.display = "inline-block";
+									chooser.appendChild( resetBtn);
+								}
 							}
-						};
+						}
+						
 						chooser.appendChild( inputTxt);
+						inputTxt.focus();
+						
+						var fakeButton = document.createElement("div");
 					}
-				})( param)
+				})( param, params[param])
 			);
 		}
 	}
 	
-	fillFunctionStack.pop()();
+	fillFunctionStack.shift()();
 }
 
 //===| GUI functions |===//
@@ -160,6 +184,15 @@ function travelDoc( root)
 	}
 
 	return msg;
+}
+
+function typeBehavior( type)
+{
+	if(type.substr(0,3) == "pe." && type.substr(-9) == ".function") {
+		// list function possibles
+	} else {
+		// display input 
+	}
 }
 
 //===| Doc code generation |===//

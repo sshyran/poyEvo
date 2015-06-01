@@ -9,11 +9,20 @@ body
 	border-bottom: 2px solid black;
 	padding: 4px;
 	font-size: 16px;
-	color: #0F1;
-	background-color: #222;
 	font-family: Monospace;
 	display: inline-block;
 	vertical-align: middle;
+}
+
+#finalEvo
+{
+	background-color: #FFE9DB;
+}
+
+#chooser
+{
+	color: #0F1;
+	background-color: #222;
 }
 
 #liveHelper
