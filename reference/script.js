@@ -148,18 +148,45 @@ function functionFiller( docNode)
 	buildStack.next();
 }
 
+function chooseAmong( choiceList)
+{
+	var chooser = gebid( "chooser");
+	var finalEvo = gebid( "finalEvo");
+	
+	for (var i=0; i<choiceList.length; ++i) {
+		var choice = choiceList[i];
+		
+		var item = document.createElement( "div");
+		item.className = "btn";
+		item.innerHTML = choice;
+		
+		item.onclick = (function (localChoice) {
+			return function(){
+				finalEvo.innerHTML += localChoice;
+				finalEvo.innerHTML += ", ";
+				buildStack.next();
+			};
+		})(choice);
+
+		chooser.appendChild( item);
+	}
+}
+
 function typeBehavior( type)
 {
 	var chooser = gebid( "chooser");
 	var finalEvo = gebid( "finalEvo");
 	
-	if(type.substr(0,3) == "pe." && type.substr(-9) == ".function") {
+	if (type.substr(0,3) == "pe." && type.substr(-9) == ".function") {
 		// list possibles function
 		var fctType = type.substr(3, type.length - 12);
 		
 		finalEvo.innerHTML += "pe." + fctType + ".";
 		builderDocNode( eval( "doc." + fctType));
-		
+	
+	} else if ( type == "Boolean") {
+		chooseAmong( ["true", "false"]);
+	
 	} else {
 		// display generic input
 		var inputTxt = document.createElement("input");
