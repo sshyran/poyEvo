@@ -187,6 +187,9 @@ function typeBehavior( type)
 	} else if ( type == "Boolean") {
 		chooseAmong( ["true", "false"]);
 	
+	} else if ( type.substr(0,1) == "[") {
+		chooseAmong( eval(type));
+	
 	} else {
 		// display generic input
 		var inputTxt = document.createElement("input");
