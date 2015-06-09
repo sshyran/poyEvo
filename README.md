@@ -8,10 +8,10 @@ For Informations please have a look on the wiki : https://github.com/Poyoman39/p
 ![poyEvo logo](./logos/poyEvo.png?raw=true)
 
 ## Why would you need PoyEvo ?
-* If you need to create animations, and require modularity
-* If you need a complete control on the evolution system
-* If you need performances (benchmark vs JQuery soon available)
-* If you don't want to use JQuery, and prefer a light library
+* If you need to create animations, and require **modularity**
+* If you need a complete **control** on the evolution system
+* If you need **performances** (benchmark vs JQuery soon available)
+* If you don't want to use JQuery, and prefer a **light** library
 
 ## Why would you *NOT* need PoyEvo ?
 * If you dont want to use JavaScript
