@@ -12,6 +12,7 @@ For Informations please have a look on the wiki : https://github.com/Poyoman39/p
 * If you need a complete **control** on the evolution system
 * If you need **performances** (benchmark vs JQuery soon available)
 * If you don't want to use JQuery, and prefer a **light** library
+* If you have difficults with complex JavaScript libraries, and need a **simple** one
 
 ## Why would you *NOT* need PoyEvo ?
 * If you dont want to use JavaScript
