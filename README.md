@@ -18,3 +18,8 @@ For Informations please have a look on the wiki : https://github.com/Poyoman39/p
 * If you dont want to use JavaScript
 * If you require compatibility with really old browsers (IE6, ...)
 * If you already use JQuery, and are satisfied of preformances / ease of use / modularity
+
+## What does make PoyEvo unique ?
+* It provides a debuging console
+* It provides a command builder tool : http://www.poyostudio.13.fr/poyEvo/reference/
+* It is not limited to annimation
