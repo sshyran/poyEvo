@@ -30,10 +30,10 @@ doc.Evo.doc+='For now, it is only used internaly.';
 doc.conf={};
 doc.conf.doc='<b>Contains configurations values.</b><br/>'
 doc.conf.doc+='Some of them can be modificated directly here, and other are for internal purpose';
-	doc.conf.refreshTime={};
-	doc.conf.refreshTime.doc='Refresh period in ms.<br/>'
-	doc.conf.refreshTime.doc+='Feel free to change it if u want lower CPU load, or better visual effect.<br/>'
-	doc.conf.refreshTime.doc+='<i>Default value : 30</i>';
+	doc.conf.refreshFunction={};
+	doc.conf.refreshFunction.doc='Function responsible of ticks raising';
+		doc.conf.refreshFunction.params={};
+
 	doc.conf.counter={};
 	doc.conf.counter.doc='Intern variable for unique id distribution<br/>'
 	doc.conf.counter.doc+='<i>Is intended for internal purposes</i>';
@@ -42,11 +42,11 @@ doc.conf.doc+='Some of them can be modificated directly here, and other are for 
 	doc.conf.listOfEvos.doc+='<i>Is intended for internal purposes</i>';
 
 
-doc.start={};
-doc.start.doc='<b>IDLE function</b><br/>'
-doc.start.doc+='This function is automatically called when lib file is included, and will loop until the page is unload.<br/>'
-doc.start.doc+='<u>This function must be called only one time ! Don\'t call it manually !</u>';
-	doc.start.params={};
+doc.compute={};
+doc.compute.doc='<b>IDLE function</b><br/>'
+doc.compute.doc+='This function is automatically called on ticks, and compute values of all animations.<br/>'
+doc.compute.doc+='See <u>pe.conf.refreshFunction</u> for more informations'
+	doc.compute.params={};
 
 doc.state={};
 doc.state.doc='<b>State values</b><br/>'
@@ -499,5 +499,12 @@ doc.aux.doc='Contains functions intended for internal use';
 		doc.aux.deleteConflictualEvo.params.targetProperty={};
 		doc.aux.deleteConflictualEvo.params.targetProperty.type='string';
 		doc.aux.deleteConflictualEvo.params.targetProperty.doc='The property we want to check if it is not doubled';
+
+	doc.aux.timeTicker={};
+	doc.aux.timeTicker.doc='Fonction responsible of tick generation. This one generate ticks using JavaScript setTimeout function.';
+		doc.aux.timeTicker.params={};
+		doc.aux.timeTicker.params.refreshTime={};
+		doc.aux.timeTicker.params.refreshTime.type='int';
+		doc.aux.timeTicker.params.refreshTime.doc='Delay in ms between eache ticks. This delay may vary due to the use of setTimeout.';
 
 

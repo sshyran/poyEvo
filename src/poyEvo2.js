@@ -42,15 +42,15 @@ var pe = {
 	//===| PoyoEvo configuration
 	conf: {
 		//===| Users Parameters |===//
-		'refreshTime':30, 					// Refresh period in ms
+		'refreshFunction': function(){pe.aux.timeTicker(30)},	// Refresh period in ms
 
 		//===| Internal Parameters |===//
-		'counter':0,
-		'listOfEvos':[] 			// List the evos curently in process
+		'counter': 0,
+		'listOfEvos': []									// List the evos curently in process
 	},
 
-	//===| IDLE function
-	start: function()
+	//===| IDLE functions
+	compute: function()
 	{
 		var i;
 
@@ -80,8 +80,6 @@ var pe = {
 				poyoCore_setAtribute( iEvo.to, iEvo.tp, iEvo.yf( iEvo.rf(p)));
 			}
 		}
-
-		setTimeout(pe.start, pe.conf.refreshTime);
 	},
 
 	//===| state values
@@ -253,10 +251,10 @@ var pe = {
 
 		// fonction escalier rotative : utile pour les sprites
 		// steps : nombre de pas
-		// duration : durée de chaque pas !!! en nombre de raffraichissements !!!
+		// duration : durée de chaque pas en ms
 		stepTime: function(steps, duration)
 		{
-			var p = steps*duration*pe.conf.refreshTime; // periode des oscilations
+			var p = steps*duration; // periode des oscilations
 
 			return function()
 			{
@@ -588,8 +586,14 @@ var pe = {
 					pe.conf.listOfEvos.splice( i, 1);
 				}
 			}
+		},
+		
+		timeTicker: function( refreshTime)
+		{
+			pe.compute();
+			setTimeout( pe.conf.refreshFunction, refreshTime);
 		}
 	}
 };
 
-pe.start();
+pe.conf.refreshFunction();
