@@ -152,7 +152,7 @@ var pe_debug = {
 		pe_debug.rawWrite(" -> ");
 		pe_debug.rawWriteColored( p.toFixed(3), "#F44");
 
-		p = poyoCore_getAtribute( evo.to, evo.tp);
+		p = pc.getAtribute( evo.to, evo.tp);
 		pe_debug.rawWrite(" -> ");
 		pe_debug.rawWriteColored( '"' + p + '"', "#CA4");
 

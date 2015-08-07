@@ -41,14 +41,14 @@ pe.addEvo.cpl( gebid("img"), "style.background-position", pe.range.fixed(0, 100)
 	pe.state.isPersitent | pe.state.removeDoubles);
 
 //(1) Cette ligne pose problème en cas de redimensionnement.
-pe.addEvo.std( gebid("code"), "style.top", 0, document.body.scrollHeight - poyoCore_wHeight(),
+pe.addEvo.std( gebid("code"), "style.top", 0, document.body.scrollHeight - pc.wHeight(),
 	pe.syntax.suffix("px"), pe.bind.scrollBar( document.body, "y", 0.1),
 	pe.shape.linear,
 	pe.state.isPersitent | pe.state.removeDoubles);
 
 //(2) Comportement amélioré grâce à "pe.addEvo.cpl" et "pe.range.dynamic".
 /*pe.addEvo.cpl( gebid("code"), "style.top", 
-	pe.range.dynamic(function(){ return 0;}, function(){ return document.body.scrollHeight - poyoCore_wHeight();}),
+	pe.range.dynamic(function(){ return 0;}, function(){ return document.body.scrollHeight - pc.wHeight();}),
 	pe.syntax.suffix("px"), pe.bind.scrollBar( document.body, "y", 0.1),
 	pe.shape.linear,
 	pe.state.isPersitent | pe.state.removeDoubles);

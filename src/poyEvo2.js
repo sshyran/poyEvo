@@ -18,10 +18,10 @@
 var pe = {
 
 	//===| PoyEvo Class
-	Evo: function( targetObject, targetProperty, pe_range_function, pe_syntax_function, pe_bind_function, pe_shape_function, pe_state_value)
+	Evo: function( targetObject, pe_applier_function, pe_range_function, pe_syntax_function, pe_bind_function, pe_shape_function, pe_state_value)
 	{
 		this.to = targetObject;
-		this.tp = targetProperty;				// 'style.top' for exemple
+		this.ap = pe_applier_function;		// pe.applier.property('style.top') for exemple
 		this.rf = pe_range_function;			// Function in charge of converting binding function value (0->1) to an other range (ev->sv)
 		this.yf = pe_syntax_function;			// Functions used to build the syntax of the value. adding 'px' for example.
 		this.bf = pe_bind_function;			// The function which indicate the percent of evolution. (0->1 in general cases)
@@ -61,11 +61,11 @@ var pe = {
 
 			if( p<0 && !iEvo.cUB)
 			{
-				poyoCore_setAtribute( iEvo.to, iEvo.tp, iEvo.yf( iEvo.rf(0)));
+				iEvo.ap( 0);
 			}
 			else if( p>1 && !iEvo.cHB)
 			{
-				poyoCore_setAtribute( iEvo.to, iEvo.tp, iEvo.yf( iEvo.rf(1)));
+				iEvo.ap( 1);
 				if( !iEvo.iPe)
 				{
 					pe.conf.listOfEvos.splice( i, 1);
@@ -77,7 +77,7 @@ var pe = {
 			else
 			{
 				p = iEvo.sf( p);
-				poyoCore_setAtribute( iEvo.to, iEvo.tp, iEvo.yf( iEvo.rf(p)));
+				iEvo.ap( p);
 			}
 		}
 	},
@@ -116,6 +116,23 @@ var pe = {
 		}
 	},
 
+	//===| applier functions
+	applier: {
+		property: function( targetProperty) {
+			return function() {
+				var p = arguments[0];
+
+				pc.setAtribute( this.to, targetProperty, this.yf( this.rf(p)));
+			}
+		},
+		
+		scrolTo: function() {//TODO permettre axe x
+			var p = arguments[0];
+			
+			this.to.scrollTo( 0, this.yf( this.rf(p)));
+		}
+	},
+	
 	//===| syntax functions
 	syntax: {
 		prefix_suffix: function( prefix, suffix)
@@ -289,12 +306,12 @@ var pe = {
 
 		mouse: function( axe, speed/*optionel*/)
 		{
-			poyoCore_trackMouse();
+			pc.trackMouse();
 
 			if( speed === undefined)
-				return pe.bind.property( poyoCore_mouse, axe, axe == "x" ? poyoCore_wWidth : poyoCore_wHeight);
+				return pe.bind.property( pc.mouse, axe, axe == "x" ? pc.wWidth : pc.wHeight);
 			else
-				return pe.bind.lazyProperty( poyoCore_mouse, axe, axe == "x" ? poyoCore_wWidth : poyoCore_wHeight, speed);
+				return pe.bind.lazyProperty( pc.mouse, axe, axe == "x" ? pc.wWidth : pc.wHeight, speed);
 		},
 
 		scrollBar: function( element, axe, speed/*optionel*/)
@@ -310,9 +327,9 @@ var pe = {
 				window.scrollBy(-1, -1);
 
 				rangeFtc = (axe == "x") ?
-						function(){return element.scrollWidth - poyoCore_wWidth();}
+						function(){return element.scrollWidth - pc.wWidth();}
 					:
-						function(){return element.scrollHeight - poyoCore_wHeight();}
+						function(){return element.scrollHeight - pc.wHeight();}
 					;
 			}
 			else // element de type classique (div, ...)
@@ -335,17 +352,17 @@ var pe = {
 		{
 			return function()
 			{
-				return poyoCore_getAtribute( element, property) / rangeFtc();
+				return pc.getAtribute( element, property) / rangeFtc();
 			};
 		},
 
 		lazyProperty: function( element, property, rangeFtc, speed)
 		{
-			var ov = poyoCore_getAtribute( element, property);
+			var ov = pc.getAtribute( element, property);
 
 			return function()
 			{
-				ov = (1-speed)*ov + speed*poyoCore_getAtribute( element, property);
+				ov = (1-speed)*ov + speed*pc.getAtribute( element, property);
 
 				return ov / rangeFtc();
 			};
@@ -390,8 +407,8 @@ var pe = {
 	// Création d'une évolution. Contrôle total de l'évolution : utile lorque l'intervale d'évolution varie au cours du temps.
 	addEvo: {
 
-		// Controle maximum de l'évolution crée ... Cette fonction est utilisée par toutes les fonctions ci-dessous
-		cpl: function( targetObject, targetProperty, pe_range_function, pe_syntax_function, pe_bind_function, pe_shape_function/*=linear*/, pe_state_value/*optional*/)
+		// Si vous devez agir via une fonction plutot que sur une propriete ... utilisez cette fonction
+		applier: function( targetObject, pe_applier_function, pe_range_function, pe_syntax_function, pe_bind_function, pe_shape_function/*=linear*/, pe_state_value/*optional*/)
 		{
 			if( pe_state_value === undefined)
 				pe_state_value = 0;
@@ -402,19 +419,25 @@ var pe = {
 			{
 				var unids = [];
 				for(var i=0; i < targetObject.length; ++i)
-					unids.push( pe.addEvo.cpl( targetObject[i], targetProperty, pe_range_function, pe_syntax_function, pe_bind_function, pe_shape_function, pe_state_value));
+					unids.push( pe.addEvo.applier( targetObject[i], pe_applier_function, pe_range_function, pe_syntax_function, pe_bind_function, pe_shape_function, pe_state_value));
 				return unids;
 			}
 			else
 			{
 				if( pe_state_value & pe.state.rD)
-					pe.aux.deleteConflictualEvo( targetObject, targetProperty);
+					pe.aux.deleteConflictualEvo( targetObject, pe_applier_function);
 
-				var evo = new pe.Evo( targetObject, targetProperty, pe_range_function, pe_syntax_function, pe_bind_function, pe_shape_function, pe_state_value);
+				var evo = new pe.Evo( targetObject, pe_applier_function, pe_range_function, pe_syntax_function, pe_bind_function, pe_shape_function, pe_state_value);
 				pe.conf.listOfEvos.push( evo);
 
 				return evo.uid;
 			}
+		},
+		
+		// Controle maximum de l'évolution créée ... Cette fonction est utilisée par toutes les fonctions ci-dessous
+		cpl: function( targetObject, targetProperty, pe_range_function, pe_syntax_function, pe_bind_function, pe_shape_function/*=linear*/, pe_state_value/*optional*/)
+		{
+			return pe.addEvo.applier( targetObject, pe.applier.property( targetProperty), pe_range_function, pe_syntax_function, pe_bind_function, pe_shape_function/*=linear*/, pe_state_value/*optional*/)
 		},
 
 		// Création d'une évolution standard ...
@@ -459,17 +482,17 @@ var pe = {
 			pe_state_value |= pe.state.rD;
 
 			// Computing offset
-			var offset = poyoCore_getAbsPos( targetObject.parentNode);
-			if (poyoCore_mouse.trackerStarted)
+			var offset = pc.getAbsPos( targetObject.parentNode);
+			if (pc.mouse.trackerStarted)
 			{
-				var pObj = poyoCore_getAbsPos( targetObject);
+				var pObj = pc.getAbsPos( targetObject);
 
-				offset.x += poyoCore_mouse.x - pObj.x;
-				offset.y += poyoCore_mouse.y - pObj.y;
+				offset.x += pc.mouse.x - pObj.x;
+				offset.y += pc.mouse.y - pObj.y;
 			}
 			else
 			{
-				var dObj = poyoCore_getInnerDim( targetObject);
+				var dObj = pc.getInnerDim( targetObject);
 
 				offset.x += dObj.w / 2;
 				offset.y += dObj.h / 2;
@@ -477,10 +500,10 @@ var pe = {
 
 			// Starting annimations
 			var drx = pe.addEvo.cpl( targetObject, "style.left",
-				pe.range.dynamic( function(){ return -offset.x;}, function(){ return poyoCore_wWidth()-offset.x;}),
+				pe.range.dynamic( function(){ return -offset.x;}, function(){ return pc.wWidth()-offset.x;}),
 				pe.syntax.suffix("px"), pe.bind.mouse("x", 0.2), pe.shape.linear, true, true, true, true);
 			var dry = pe.addEvo.cpl( targetObject, "style.top",
-				pe.range.dynamic( function(){ return -offset.y;}, function(){ return poyoCore_wHeight()-offset.y;}),
+				pe.range.dynamic( function(){ return -offset.y;}, function(){ return pc.wHeight()-offset.y;}),
 				pe.syntax.suffix("px"), pe.bind.mouse("y", 0.2), pe.shape.linear, true, true, true, true);
 
 			// cursor management
@@ -521,9 +544,9 @@ var pe = {
 			}
 
 			// calcul de la place en % occupée par l'objet
-			var objPos = poyoCore_getAbsPos( targetObject);
-			var scrollHeight = document.body.offsetHeight - poyoCore_wHeight(); // champ parcouru par la scrollbar (0->1)
-			var wHeight = poyoCore_wHeight() / scrollHeight; // champ % recouvert par la fenetre
+			var objPos = pc.getAbsPos( targetObject);
+			var scrollHeight = document.body.offsetHeight - pc.wHeight(); // champ parcouru par la scrollbar (0->1)
+			var wHeight = pc.wHeight() / scrollHeight; // champ % recouvert par la fenetre
 
 			var objSection = {
 				low: objPos.y / scrollHeight,
@@ -532,7 +555,7 @@ var pe = {
 			objSection.low -= wHeight;
 
 			pe.addEvo.std( targetObject, "style.background-position", range.low, range.high,
-				pe.syntax.bgPosition( gebid("img"), "y", "%"),
+				pe.syntax.bgPosition( targetObject, "y", "%"),
 				pe.overLay.expand( pe.bind.scrollBar( document.body, "y", speed), objSection),
 				pe.shape.linear,
 				pe.state.iPE | pe.state.rD);
@@ -575,13 +598,13 @@ var pe = {
 			return (pe.conf.listOfEvos[i].uid == unid ? i : null);
 		},
 
-		// Supprime les annimations ayant pour cible le même objet et la même propriété
-		deleteConflictualEvo: function( targetObject, targetProperty)
+		// Supprime les annimations ayant pour cible le même objet et la même applier_function
+		deleteConflictualEvo: function( targetObject, pe_applier_function)
 		{
 			for( var i=pe.conf.listOfEvos.length-1; i>=0; --i)
 			{
 				if( targetObject == pe.conf.listOfEvos[i].to &&
-					targetProperty == pe.conf.listOfEvos[i].tp)
+					pe_applier_function == pe.conf.listOfEvos[i].ap)
 				{
 					pe.conf.listOfEvos.splice( i, 1);
 				}
