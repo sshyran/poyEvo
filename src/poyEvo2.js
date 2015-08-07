@@ -76,7 +76,7 @@ var pe = {
 			}
 			else
 			{
-				p = iEvo.sf( p);
+				p = iEvo.yf( iEvo.rf( iEvo.sf( p)));
 				iEvo.ap( p);
 			}
 		}
@@ -122,14 +122,14 @@ var pe = {
 			return function() {
 				var p = arguments[0];
 
-				pc.setAtribute( this.to, targetProperty, this.yf( this.rf(p)));
+				pc.setAtribute( this.to, targetProperty, p);
 			}
 		},
 		
 		scrolTo: function() {//TODO permettre axe x
 			var p = arguments[0];
 			
-			this.to.scrollTo( 0, this.yf( this.rf(p)));
+			this.to.scrollTo( 0, p);
 		}
 	},
 	
