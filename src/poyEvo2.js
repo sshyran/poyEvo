@@ -61,11 +61,11 @@ var pe = {
 
 			if( p<0 && !iEvo.cUB)
 			{
-				iEvo.ap( 0);
+				iEvo.ap( iEvo.yf( iEvo.rf(0)));
 			}
 			else if( p>1 && !iEvo.cHB)
 			{
-				iEvo.ap( 1);
+				iEvo.ap( iEvo.yf( iEvo.rf(1)));
 				if( !iEvo.iPe)
 				{
 					pe.conf.listOfEvos.splice( i, 1);
