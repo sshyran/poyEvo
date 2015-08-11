@@ -18,7 +18,7 @@
 
 var pe_debug = {
 	conf: {
-		refreshTimeMultiplier: 10,
+		refreshTime: 300,
 		limitDisplayedEvosNunber: 100
 	},
 
@@ -40,7 +40,7 @@ var pe_debug = {
 	idle: function()
 	{
 		pe_debug.generateReport();
-		setTimeout(pe_debug.idle, pe.conf.refreshTime*pe_debug.conf.refreshTimeMultiplier);
+		setTimeout(pe_debug.idle, pe_debug.conf.refreshTime);
 	},
 
 	openConsole: function()
