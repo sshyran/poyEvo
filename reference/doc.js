@@ -8,9 +8,9 @@ doc.Evo.doc+='For now, it is only used internaly.';
 	doc.Evo.params.targetObject={};
 	doc.Evo.params.targetObject.type='Object';
 	doc.Evo.params.targetObject.doc='Contains the object target of the evolution';
-	doc.Evo.params.pe_applier_function={};
-	doc.Evo.params.pe_applier_function.type='pe.applier.function';
-	doc.Evo.params.pe_applier_function.doc='Function which apply the computed value of animation. See : pe.applier';
+	doc.Evo.params.pe_applier_object={};
+	doc.Evo.params.pe_applier_object.type='pe.applier.object';
+	doc.Evo.params.pe_applier_object.doc='Object containing the applier. See : pe.applier';
 	doc.Evo.params.pe_range_function={};
 	doc.Evo.params.pe_range_function.type='pe.range.function';
 	doc.Evo.params.pe_range_function.doc='Function responsible of the range. See : pe.range';
@@ -94,7 +94,7 @@ doc.range.doc+='Functions used to expand a bind value';
 
 
 doc.applier={};
-doc.applier.doc='Functions used to apply the computed animation value to the WebSite.';
+doc.applier.doc='Object containing :<br/>id: unique id associated to this function call<br/>fct:Functions used to apply the computed animation value to the WebSite.';
 	doc.applier.property={};
 	doc.applier.property.doc='Apply the computed value to the property of an object';
 		doc.applier.property.params={};
@@ -105,6 +105,9 @@ doc.applier.doc='Functions used to apply the computed animation value to the Web
 	doc.applier.scrolTo={};
 	doc.applier.scrolTo.doc='Apply the computed value to the scroll position in the page';
 		doc.applier.scrolTo.params={};
+		doc.applier.scrolTo.params.axe={};
+		doc.applier.scrolTo.params.axe.type='["x","y"]';
+		doc.applier.scrolTo.params.axe.doc='Precise which scroll axe is target';
 
 
 doc.syntax={};
@@ -325,9 +328,9 @@ doc.addEvo.doc+='The most complete one is "cpl". But the other make possible to 
 		doc.addEvo.applier.params.targetObject={};
 		doc.addEvo.applier.params.targetObject.type='object';
 		doc.addEvo.applier.params.targetObject.doc='The object target of the evolution';
-		doc.addEvo.applier.params.pe_applier_function={};
-		doc.addEvo.applier.params.pe_applier_function.type='pe.applier.function';
-		doc.addEvo.applier.params.pe_applier_function.doc='Function which apply the computed value of animation. See : pe.applier';
+		doc.addEvo.applier.params.pe_applier_object={};
+		doc.addEvo.applier.params.pe_applier_object.type='pe.applier.object';
+		doc.addEvo.applier.params.pe_applier_object.doc='Object containing the applier. See : pe.applier';
 		doc.addEvo.applier.params.pe_range_function={};
 		doc.addEvo.applier.params.pe_range_function.type='pe.range.function';
 		doc.addEvo.applier.params.pe_range_function.doc='Function responsible of the range. See : pe.range';
@@ -537,9 +540,19 @@ doc.aux.doc='Contains functions intended for internal use';
 		doc.aux.deleteConflictualEvo.params.targetObject={};
 		doc.aux.deleteConflictualEvo.params.targetObject.type='object';
 		doc.aux.deleteConflictualEvo.params.targetObject.doc='The object we want to check if he has a double evolution';
-		doc.aux.deleteConflictualEvo.params.pe_applier_function={};
-		doc.aux.deleteConflictualEvo.params.pe_applier_function.type='pe.applier.function';
-		doc.aux.deleteConflictualEvo.params.pe_applier_function.doc='Function which apply the computed value of animation. See : pe.applier';
+		doc.aux.deleteConflictualEvo.params.pe_applier_object={};
+		doc.aux.deleteConflictualEvo.params.pe_applier_object.type='pe.applier.object';
+		doc.aux.deleteConflictualEvo.params.pe_applier_object.doc='Object containing the applier. See : pe.applier';
+
+	doc.aux.callHash={};
+	doc.aux.callHash.doc='Generate the hash of the called function and its parameters';
+		doc.aux.callHash.params={};
+		doc.aux.callHash.params.functionId={};
+		doc.aux.callHash.params.functionId.type='string';
+		doc.aux.callHash.params.functionId.doc='Give the name of the called function';
+		doc.aux.callHash.params.arguments={};
+		doc.aux.callHash.params.arguments.type='array/object';
+		doc.aux.callHash.params.arguments.doc='Arguments container of the called function';
 
 	doc.aux.timeTicker={};
 	doc.aux.timeTicker.doc='Fonction responsible of tick generation. This one generate ticks using JavaScript setTimeout function.';
@@ -547,3 +560,5 @@ doc.aux.doc='Contains functions intended for internal use';
 		doc.aux.timeTicker.params.refreshTime={};
 		doc.aux.timeTicker.params.refreshTime.type='int';
 		doc.aux.timeTicker.params.refreshTime.doc='Delay in ms between eache ticks. This delay may vary due to the use of setTimeout.';
+
+

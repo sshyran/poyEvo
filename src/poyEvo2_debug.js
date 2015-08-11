@@ -139,15 +139,17 @@ var pe_debug = {
 		if( doShare)
 			pe_debug.rawWrite("<hr/>");
 
+		// target object
 		pe_debug.rawWrite("[");
 		pe_debug.rawWriteColored( evo.to.tagName + " ", "#AA5");
 		pe_debug.printAttribute( "id", evo.to.id); pe_debug.rawWrite(", ");
 		pe_debug.printAttribute( "class", evo.to.className);
 		pe_debug.rawWrite("] ");
-
+		
+		// Evo property
 		pe_debug.rawWrite("{");
 		pe_debug.rawWriteColored("[" + evo.uid + "] ", "#FB2");
-//		pe_debug.printAttribute( "property", evo.tp); pe_debug.rawWrite(", ");
+		pe_debug.printAttribute( "applier", evo.hdb); pe_debug.rawWrite(", ");
 		pe_debug.printAttribute( "state", "0b" + evo.stv.toString(2).toUpperCase()); pe_debug.rawWrite(", ");
 		pe_debug.rawWrite("} : ");
 

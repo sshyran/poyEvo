@@ -18,10 +18,10 @@
 var pe = {
 
 	//===| PoyEvo Class
-	Evo: function( targetObject, pe_applier_function, pe_range_function, pe_syntax_function, pe_bind_function, pe_shape_function, pe_state_value)
+	Evo: function( targetObject, pe_applier_object, pe_range_function, pe_syntax_function, pe_bind_function, pe_shape_function, pe_state_value)
 	{
 		this.to = targetObject;
-		this.ap = pe_applier_function;		// pe.applier.property('style.top') for exemple
+		this.ap = pe_applier_object.fct;		// pe.applier.property('style.top') for exemple
 		this.rf = pe_range_function;			// Function in charge of converting binding function value (0->1) to an other range (ev->sv)
 		this.yf = pe_syntax_function;			// Functions used to build the syntax of the value. adding 'px' for example.
 		this.bf = pe_bind_function;			// The function which indicate the percent of evolution. (0->1 in general cases)
@@ -33,7 +33,8 @@ var pe = {
 
 		// --- interne ---
 		this.uid = ++pe.conf.counter; 		// Identifiant unique de l'animation
-
+		this.hdb = pe_applier_object.id;		// Identifiant d'applier
+		
 		this.cUB = this.stv & pe.state.CUB;
 		this.cHB = this.stv & pe.state.cHB;
 		this.iPe = this.stv & pe.state.iPE;
@@ -116,20 +117,31 @@ var pe = {
 		}
 	},
 
-	//===| applier functions
+	//===| applier functions/objects
+	// retournent un objet contenant un identifiant d'appel, et la fonction associée.
 	applier: {
 		property: function( targetProperty) {
-			return function() {
-				var p = arguments[0];
-
-				pc.setAtribute( this.to, targetProperty, p);
+			return {
+				id: pe.aux.callHash('property', arguments),
+				fct: function() {
+					var p = arguments[0];
+					pc.setAtribute( this.to, targetProperty, p);
+				}
 			}
 		},
 		
-		scrolTo: function() {//TODO permettre axe x
-			var p = arguments[0];
-			
-			this.to.scrollTo( 0, p);
+		scrolTo: function( axe) {//TODO permettre axe x
+			return {
+				id: callHash('property', arguments),
+				fct: function() {
+					var p = arguments[0];
+					if( axe == "x") {
+						this.to.scrollTo( 0, p);
+					} else {
+						this.to.scrollTo( p, 0);
+					}
+				}
+			}
 		}
 	},
 	
@@ -408,7 +420,7 @@ var pe = {
 	addEvo: {
 
 		// Si vous devez agir via une fonction plutot que sur une propriete ... utilisez cette fonction
-		applier: function( targetObject, pe_applier_function, pe_range_function, pe_syntax_function, pe_bind_function, pe_shape_function/*=linear*/, pe_state_value/*optional*/)
+		applier: function( targetObject, pe_applier_object, pe_range_function, pe_syntax_function, pe_bind_function, pe_shape_function/*=linear*/, pe_state_value/*optional*/)
 		{
 			if( pe_state_value === undefined)
 				pe_state_value = 0;
@@ -419,15 +431,15 @@ var pe = {
 			{
 				var unids = [];
 				for(var i=0; i < targetObject.length; ++i)
-					unids.push( pe.addEvo.applier( targetObject[i], pe_applier_function, pe_range_function, pe_syntax_function, pe_bind_function, pe_shape_function, pe_state_value));
+					unids.push( pe.addEvo.applier( targetObject[i], pe_applier_object, pe_range_function, pe_syntax_function, pe_bind_function, pe_shape_function, pe_state_value));
 				return unids;
 			}
 			else
 			{
 				if( pe_state_value & pe.state.rD)
-					pe.aux.deleteConflictualEvo( targetObject, pe_applier_function);
+					pe.aux.deleteConflictualEvo( targetObject, pe_applier_object);
 
-				var evo = new pe.Evo( targetObject, pe_applier_function, pe_range_function, pe_syntax_function, pe_bind_function, pe_shape_function, pe_state_value);
+				var evo = new pe.Evo( targetObject, pe_applier_object, pe_range_function, pe_syntax_function, pe_bind_function, pe_shape_function, pe_state_value);
 				pe.conf.listOfEvos.push( evo);
 
 				return evo.uid;
@@ -598,17 +610,24 @@ var pe = {
 			return (pe.conf.listOfEvos[i].uid == unid ? i : null);
 		},
 
-		// Supprime les annimations ayant pour cible le même objet et la même applier_function
-		deleteConflictualEvo: function( targetObject, pe_applier_function)
+		// Supprime les animations ayant pour cible le même objet et le même applier_object
+		deleteConflictualEvo: function( targetObject, pe_applier_object)
 		{
 			for( var i=pe.conf.listOfEvos.length-1; i>=0; --i)
 			{
 				if( targetObject == pe.conf.listOfEvos[i].to &&
-					pe_applier_function == pe.conf.listOfEvos[i].ap)
+					pe_applier_object.id == pe.conf.listOfEvos[i].hdb)
 				{
 					pe.conf.listOfEvos.splice( i, 1);
 				}
 			}
+		},
+		
+		// Genere le hash de l'appel de fonction
+		callHash: function(functionId, arguments)
+		{
+			var arguments_a = [].slice.call(arguments); // convert arguments to array
+			return( functionId + ':' + arguments_a.join('-'));
 		},
 		
 		timeTicker: function( refreshTime)
