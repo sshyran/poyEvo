@@ -21,5 +21,5 @@ For Informations please have a look on the wiki : https://github.com/Poyoman39/p
 
 ## What does make PoyEvo unique ?
 * It provides a debuging console
-* It provides a command builder tool : http://www.poyostudio.13.fr/poyEvo/reference/
+* It provides a command builder tool : http://www.poyostudio.fr/lib/js/poyEvo/reference/index.html
 * It is not limited to annimation
