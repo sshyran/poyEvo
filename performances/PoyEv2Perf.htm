@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" style="height:100%;">
+
+	<head>
+		<title>poyoCore TestPage</title>
+		<meta charset="UTF-8">
+		<meta http-equiv="Content-Language" content="fr"/>
+		<script type="text/javascript" src="/lib/js/poyoCore.js"></script>
+
+		<script type="text/javascript">
+			pc.load.jsLib( 'poyoCore_std');
+			pc.load.jsLib( 'poyEvo2');
+			//load_jsLib( 'poyEvo2_debug');
+				
+			function thiStart()
+			{
+				var nbElt = 200;
+				var nbElt = prompt("Nombre d'étoiles (max. 1000 recommandé)");
+				for(var i=nbElt; i; --i)
+				{
+					var rand = {
+						delta: Math.random()*1000,
+						time: Math.random()*1000 + 100,
+						phy: Math.random(),
+						x: Math.random()*96,
+						y: Math.random()*96,
+						wh: Math.random()*5+1,
+						move: -Math.random() * 8,
+						speed: Math.random() * 0.2 + 0.05
+					};
+					
+					var elt = document.createElement("div");
+					elt.className = "elt";
+					elt.style.left = rand.x + "%";
+					elt.style.top = rand.y + "%";
+					elt.style.width = rand.wh + "px";
+					elt.style.height = rand.wh + "px";
+					document.body.appendChild( elt);
+					
+					pe.addEvo.std( elt, "style.backgroundColor", 0, 255,
+						pe.syntax.grayscale, pe.bind.rotativeTime( rand.delta, rand.time, rand.phy),
+						pe.shape.linear, pe.state.isPersitent);
+					
+					pe.addEvo.std( elt, "style.left", rand.x - rand.move, rand.x + rand.move,
+						pe.syntax.suffix("%"), pe.bind.mouse( "x", 0.1),
+						pe.shape.linear, pe.state.isPersistent);
+					pe.addEvo.std( elt, "style.top", rand.y - rand.move, rand.y + rand.move,
+						pe.syntax.suffix("%"), pe.bind.mouse( "y", 0.1),
+						pe.shape.linear, pe.state.isPersistent);
+				}
+			}
+			
+		</script>
+		<style>
+			body {
+				background-color: black;
+			}
+			
+			.elt
+			{
+				position: fixed;
+				width: 4px;
+				height: 4px;
+				
+			}
+		</style>
+	</head>
+	
+	<body style="height:100%;" onload="thiStart();">
+		
+	</body>
+</html>

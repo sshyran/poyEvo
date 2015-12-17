@@ -1,0 +1,167 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" style="height:100%;">
+
+	<head>
+		<title>poyoCore TestPage</title>
+		<meta charset="UTF-8">
+		<meta http-equiv="Content-Language" content="fr"/>
+		<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+		<script type="text/javascript" src="/lib/js/poyoCore.js"></script>
+
+		<script type="text/javascript">
+			pc.load.jsLib( 'poyoCore_std');
+			pc.load.jsLib( 'poyEvo2');
+			
+			function JQanimLeft(localElt, rand, callBack) {
+				rand.move = -rand.move;
+				$(localElt).animate( {left:(rand.x + rand.move)+'%'}, {
+					duration: rand.time,
+					queue: false,
+					complete: function(){callBack.call(this, localElt, rand, callBack)}
+				});
+			};
+			
+			function JQanimTop(localElt, rand, callBack) {
+				rand.move = -rand.move;
+				$(localElt).animate( {top:(rand.y + rand.move)+'%'}, {
+					duration: rand.time,
+					queue: false,
+					complete: function(){callBack.call(this, localElt, rand, callBack)}
+				});
+			};
+			
+			function JQanimOpa(localElt, rand, callBack) {
+				if( rand.move == 1) {
+					rand.move = 0.5;
+				} else {
+					rand.move = 1;
+				}
+				$(localElt).animate( {opacity:rand.move}, {
+					duration: rand.time,
+					queue: false,
+					complete: function(){callBack.call(this, localElt, rand, callBack)}
+				});
+			};
+			
+			function PEanimLeft(localElt, rand, callBack) {
+				rand.move = -rand.move;
+
+				var iEvo = pe.addEvo.std( localElt, "style.left", parseInt(localElt.style.left), rand.x + rand.move,
+					pe.syntax.suffix("%"), pe.bind.time( 0, rand.time),
+					pe.shape.sin);
+				
+				pe.setEvo.callBack(iEvo, function(){callBack.call(this, localElt, rand, callBack)});
+			};
+			
+			function PEanimTop(localElt, rand, callBack) {
+				rand.move = -rand.move;
+
+				var iEvo = pe.addEvo.std( localElt, "style.top", parseInt(localElt.style.top), rand.y + rand.move,
+					pe.syntax.suffix("%"), pe.bind.time( 0, rand.time),
+					pe.shape.sin);
+				
+				pe.setEvo.callBack(iEvo, function(){callBack.call(this, localElt, rand, callBack)});
+			};
+			
+			function PEanimOpa(localElt, rand, callBack) {
+				if( rand.move == 1) {
+					rand.move = 0.5;
+				} else {
+					rand.move = 1;
+				}
+				
+				var iEvo = pe.addEvo.std( localElt, "style.opacity", localElt.style.opacity, rand.move,
+					pe.syntax.none, pe.bind.time( 0, rand.time),
+					pe.shape.linear);
+				
+				pe.setEvo.callBack(iEvo, function(){callBack.call(this, localElt, rand, callBack)});
+			};
+			
+			function PEOanimLeft(localElt, rand, callBack) {
+				pe.addEvo.std( localElt, "style.left", rand.x - rand.move, rand.x + rand.move,
+					pe.syntax.suffix("%"), pe.bind.rotativeTime( 0, 2*rand.time, 0),
+					pe.shape.sin);
+			};
+			
+			function PEOanimTop(localElt, rand, callBack) {
+				pe.addEvo.std( localElt, "style.top", rand.y - rand.move, rand.y + rand.move,
+					pe.syntax.suffix("%"), pe.bind.rotativeTime( 0, 2*rand.time, 0),
+					pe.shape.sin);
+			};
+			
+			function PEOanimOpa(localElt, rand, callBack) {
+				pe.addEvo.std( localElt, "style.opacity", 0.5, 1,
+					pe.syntax.none, pe.bind.rotativeTime( 0, 2*rand.time, 0),
+					pe.shape.linear);
+			};
+			
+			function thiStart( libChoice)
+			{
+				$('#controler').hide();
+				
+				var nbElt = gebid('nbElt').value;
+//				var nbElt = 200;
+//				var nbElt = prompt("Nombre d'étoiles (max. 1000 recommandé)");
+				
+				for(var i=nbElt; i; --i)
+				{
+					var rand = {
+						delta: Math.random()*1000,
+						time: Math.random()*1000 + 100,
+						phy: Math.random(),
+						x: Math.random()*96,
+						y: Math.random()*96,
+						wh: Math.random()*5+1,
+						move: -Math.random() * 8,
+						speed: Math.random() * 0.2 + 0.05
+					};
+					
+					var elt = document.createElement("div");
+					elt.className = "elt";
+					elt.style.left = rand.x + "%";
+					elt.style.top = rand.y + "%";
+					elt.style.width = rand.wh + "px";
+					elt.style.height = rand.wh + "px";
+					document.body.appendChild( elt);
+					
+					if (libChoice == 'PE') {
+						PEanimLeft(elt, JSON.parse(JSON.stringify(rand)), PEanimLeft);
+						PEanimTop(elt, JSON.parse(JSON.stringify(rand)), PEanimTop);
+						PEanimOpa(elt, JSON.parse(JSON.stringify(rand)), PEanimOpa);
+					} else if (libChoice == 'PEO') {
+						PEOanimLeft(elt, JSON.parse(JSON.stringify(rand)), PEanimLeft);
+						PEOanimTop(elt, JSON.parse(JSON.stringify(rand)), PEanimTop);
+						PEOanimOpa(elt, JSON.parse(JSON.stringify(rand)), PEanimOpa);
+					} else {
+						JQanimLeft(elt, JSON.parse(JSON.stringify(rand)), JQanimLeft);
+						JQanimTop(elt, JSON.parse(JSON.stringify(rand)), JQanimTop);
+						JQanimOpa(elt, JSON.parse(JSON.stringify(rand)), JQanimOpa);
+					}
+				}
+			}
+			
+		</script>
+		<style>
+			body {
+				background-color: black;
+			}
+			
+			.elt
+			{
+				position: fixed;
+				width: 4px;
+				height: 4px;
+				background-color: white;
+			}
+		</style>
+	</head>
+	
+	<body style="height:100%;" onload="">
+		<div id="controler">
+			Object number : <input id="nbElt" type=text value="500"/>
+			<button onclick='thiStart( "JQ");'>With JQuery</button>
+			<button onclick='thiStart( "PE");'>With PoyEvo</button>
+			<button onclick='thiStart( "PEO");'>With PoyEvo optimized</button>
+		</div>
+	</body>
+</html>

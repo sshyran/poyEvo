@@ -130,7 +130,7 @@ var pe = {
 			}
 		},
 		
-		scrolTo: function( axe) {//TODO permettre axe x
+		scrolTo: function( axe) {
 			return {
 				id: callHash('property', arguments),
 				fct: function() {
@@ -481,7 +481,7 @@ var pe = {
 			var pe_state_value = removeDoubles ? pe.state.rD : 0;
 			pe_state_value |= pe.state.iPE;
 
-			return pe.addEvo.cpl( targetDiv, "style.backgroundPosition", pe.range.fixed(0, nb_img*px_space), pe.syntax.suffix("px 0px"), pe.bind.stepTime(nb_img, timespace), pe.shape.linear, pe_state_value);
+			return pe.addEvo.cpl( targetDiv, "style.backgroundPosition", pe.range.fixed(nb_img*px_space, 0), pe.syntax.suffix("px 0px"), pe.bind.stepTime(nb_img, timespace), pe.shape.linear, pe_state_value);
 		},
 
 		// Démare un Drag & Drop sur l'objet "targetObjet". callBackFunction est appelée au moment du Drop.
